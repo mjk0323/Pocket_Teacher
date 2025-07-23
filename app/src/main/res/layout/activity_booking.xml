@@ -65,6 +65,7 @@
 
         <!-- 버튼 2: 야구 경기 예매 -->
         <LinearLayout
+            android:id="@+id/button_baseball_ticket"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"

@@ -102,6 +102,7 @@
 
     <!-- 버튼 3 -->
     <LinearLayout
+        android:id="@+id/button_voice_guide"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
