@@ -86,6 +86,7 @@
 
         <!-- 버튼 3: 뒤로가기 -->
         <LinearLayout
+            android:id="@+id/button_back"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"

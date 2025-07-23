@@ -16,6 +16,11 @@ class BookingActivity : AppCompatActivity() {
             val intent = Intent(this, TrainTicketActivity::class.java)
             startActivity(intent)
         }
+
+        val backButton = findViewById<LinearLayout>(R.id.button_back)
+        backButton.setOnClickListener {
+            finish() // 이전 화면으로 돌아감
+        }
     }
 
 
