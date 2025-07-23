@@ -42,6 +42,7 @@
 
         <!-- 버튼 1: 카카오톡 -->
         <LinearLayout
+            android:id="@+id/button_kakao"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -64,6 +65,7 @@
 
         <!-- 버튼 2: 유튜브 -->
         <LinearLayout
+            android:id="@+id/button_youtube"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
