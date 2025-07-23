@@ -2,6 +2,8 @@ package com.example.pocket_teacher
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -33,6 +35,14 @@ class MainActivity : AppCompatActivity() {
         bookingButton.setOnClickListener {
             val intent = Intent(this, BookingActivity::class.java)
             startActivity(intent)
+        }
+
+        // 닫기 버튼 처리
+        val closeButton = findViewById<ImageView>(R.id.btn_close)
+        closeButton.visibility = View.VISIBLE
+
+        closeButton.setOnClickListener {
+            finish()
         }
     }
 }
