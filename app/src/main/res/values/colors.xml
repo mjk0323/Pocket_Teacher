@@ -2,4 +2,7 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="button_default">#FFFFFF</color>         <!-- 기본 흰색 -->
+    <color name="button_selected">#FFE595</color>        <!-- 클릭 시 노란색 -->
+    <color name="button_border">#222222</color>          <!-- 버튼 테두리 -->
 </resources>
