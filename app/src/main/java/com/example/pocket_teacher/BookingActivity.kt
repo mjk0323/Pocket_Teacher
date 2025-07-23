@@ -17,6 +17,12 @@ class BookingActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        val baseballTicketButton = findViewById<LinearLayout>(R.id.button_baseball_ticket)
+        baseballTicketButton.setOnClickListener {
+            val intent = Intent(this, BaseballTicketActivity::class.java)
+            startActivity(intent)
+        }
+
         val backButton = findViewById<LinearLayout>(R.id.button_back)
         backButton.setOnClickListener {
             finish() // 이전 화면으로 돌아감
