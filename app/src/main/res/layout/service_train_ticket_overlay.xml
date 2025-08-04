@@ -5,6 +5,9 @@
     android:background="@android:color/transparent"
     android:padding="8dp">
 
+    <!-- 다음 4개는 버튼 비회원으로 예매 버튼으로 들어간 뒤에 있음
+    (마지막 하나는 예매내역 확인 버튼을 클릭한 후에 있음)  -->
+
     <!-- 출발역 말풍선 -->
     <LinearLayout
         android:id="@+id/departure_container"
@@ -22,7 +25,7 @@
             android:layout_height="wrap_content"
             android:text="출발역 선택"
             android:textSize="14sp"
-            android:textColor="@android:color/black"
+            android:textColor="@color/balloon_text"
             android:background="@drawable/bg_overlay"
             android:padding="10dp" />
 
@@ -51,7 +54,7 @@
             android:layout_height="wrap_content"
             android:text="도착역 선택"
             android:textSize="14sp"
-            android:textColor="@android:color/black"
+            android:textColor="@color/balloon_text"
             android:background="@drawable/bg_overlay"
             android:padding="10dp" />
 
@@ -79,7 +82,7 @@
             android:layout_height="wrap_content"
             android:text="열차 출발 날짜 선택"
             android:textSize="14sp"
-            android:textColor="@android:color/black"
+            android:textColor="@color/balloon_text"
             android:background="@drawable/bg_overlay"
             android:padding="10dp" />
 
@@ -107,7 +110,7 @@
             android:layout_height="wrap_content"
             android:text="탑승 인원 선택"
             android:textSize="14sp"
-            android:textColor="@android:color/black"
+            android:textColor="@color/balloon_text"
             android:background="@drawable/bg_overlay"
             android:padding="10dp" />
 
@@ -119,7 +122,7 @@
             android:layout_marginEnd="20dp" />
     </LinearLayout>
 
-    <!-- SNS 로그인 (카카오톡) 말풍선 -->
+    <!-- SNS 로그인 (카카오톡) 말풍선 (이건 예매내역 확인 로그인창 아래에 위치해 있음) -->
     <LinearLayout
         android:id="@+id/kakao_login_container"
         android:orientation="vertical"
@@ -135,7 +138,7 @@
             android:layout_height="wrap_content"
             android:text="카카오톡 계정으로 로그인"
             android:textSize="14sp"
-            android:textColor="@android:color/black"
+            android:textColor="@color/balloon_text"
             android:background="@drawable/bg_overlay"
             android:padding="10dp" />
 

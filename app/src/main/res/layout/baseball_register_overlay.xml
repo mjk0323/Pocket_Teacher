@@ -5,6 +5,8 @@
     android:background="@android:color/transparent"
     android:padding="8dp">
 
+    <!-- 다음 5개는 모두 로그인 후 예매 버튼으로 들어간 뒤에 있음-->
+
     <!-- 구단 선택 -->
     <LinearLayout
         android:id="@+id/team_select_container"
@@ -22,7 +24,7 @@
             android:layout_height="wrap_content"
             android:text="응원하고자 하는 구단을 선택"
             android:textSize="14sp"
-            android:textColor="@android:color/black"
+            android:textColor="@color/balloon_text"
             android:background="@drawable/bg_overlay"
             android:padding="10dp" />
 
@@ -34,7 +36,7 @@
             android:layout_marginStart="20dp" />
     </LinearLayout>
 
-    <!-- 날짜 선택 -->
+    <!-- (구단 선택 후) 날짜 선택 -->
     <LinearLayout
         android:id="@+id/date_select_container"
         android:orientation="vertical"
@@ -49,9 +51,9 @@
             android:id="@+id/date_select_overlay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="경기 관람 날짜 선택(옆으로 밀어 날짜 더보기)"
+            android:text="경기 관람 날짜 선택 \n (옆으로 밀어 날짜 더보기)"
             android:textSize="14sp"
-            android:textColor="@android:color/black"
+            android:textColor="@color/balloon_text"
             android:background="@drawable/bg_overlay"
             android:padding="10dp" />
 
@@ -63,7 +65,7 @@
             android:layout_marginStart="20dp" />
     </LinearLayout>
 
-    <!-- 좌석 구역 선택 -->
+    <!-- (날짜 선택 후) 좌석 구역 선택 (그림에서 선택) -->
     <LinearLayout
         android:id="@+id/seat_area_container"
         android:orientation="vertical"
@@ -79,7 +81,7 @@
             android:layout_height="wrap_content"
             android:text="원하는 좌석의 구역을 그림을 눌러 선택"
             android:textSize="14sp"
-            android:textColor="@android:color/black"
+            android:textColor="@color/balloon_text"
             android:background="@drawable/bg_overlay"
             android:padding="10dp" />
 
@@ -90,7 +92,8 @@
             android:layout_gravity="center" />
     </LinearLayout>
 
-    <!-- 좌석 등급 선택 -->
+    <!-- (구역으로 선택하는게 아닌 좌석 등급으로 좌석을 선택하고 싶을 때)
+    좌석 등급 선택 (야구장 좌석 구역 그램 아래에 있음) -->
     <LinearLayout
         android:id="@+id/seat_grade_container"
         android:orientation="vertical"
@@ -107,7 +110,7 @@
             android:layout_height="wrap_content"
             android:text="혹은 원하는 등급의 좌석을 선택 (스크롤을 내려 더 보기)"
             android:textSize="14sp"
-            android:textColor="@android:color/black"
+            android:textColor="@color/balloon_text"
             android:background="@drawable/bg_overlay"
             android:padding="10dp" />
 
@@ -119,7 +122,7 @@
             android:layout_marginEnd="20dp" />
     </LinearLayout>
 
-    <!-- 티켓 종류 및 매수 선택 -->
+    <!-- (좌석 선택 후) 티켓 종류 및 매수 선택 -->
     <LinearLayout
         android:id="@+id/ticket_type_container"
         android:orientation="vertical"
@@ -135,7 +138,7 @@
             android:layout_height="wrap_content"
             android:text="해당하는 티켓의 종류의 매수 선택"
             android:textSize="14sp"
-            android:textColor="@android:color/black"
+            android:textColor="@color/balloon_text"
             android:background="@drawable/bg_overlay"
             android:padding="10dp" />
 

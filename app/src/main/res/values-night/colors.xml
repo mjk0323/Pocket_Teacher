@@ -1,0 +1,4 @@
+<resources>
+    <color name="balloon_bg">#CCFFFFFF</color>     <!-- 배경: 반투명 흰색 -->
+    <color name="balloon_text">#000000</color> <!-- 글자색 -->
+</resources>

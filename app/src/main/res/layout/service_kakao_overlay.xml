@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:text="등록된 친구 목록 보기"
             android:textSize="14sp"
-            android:textColor="@android:color/black"
+            android:textColor="@color/balloon_text"
             android:background="@drawable/bg_overlay"
             android:padding="10dp"/>
 
@@ -49,7 +49,7 @@
             android:layout_height="wrap_content"
             android:text="최근 대화 목록(오픈채팅방 제외)을 확인"
             android:textSize="14sp"
-            android:textColor="@android:color/black"
+            android:textColor="@color/balloon_text"
             android:background="@drawable/bg_overlay"
             android:padding="10dp"/>
 
@@ -77,7 +77,7 @@
             android:layout_height="wrap_content"
             android:text="오픈채팅방의 최근 대화 목록 보기"
             android:textSize="14sp"
-            android:textColor="@android:color/black"
+            android:textColor="@color/balloon_text"
             android:background="@drawable/bg_overlay"
             android:padding="10dp"/>
 
@@ -105,7 +105,7 @@
             android:layout_height="wrap_content"
             android:text="친구 새로 추가하기"
             android:textSize="14sp"
-            android:textColor="@android:color/black"
+            android:textColor="@color/balloon_text"
             android:background="@drawable/bg_overlay"
             android:padding="10dp"/>
 
@@ -133,7 +133,7 @@
             android:layout_height="wrap_content"
             android:text="내 프로필을 확인"
             android:textSize="14sp"
-            android:textColor="@android:color/black"
+            android:textColor="@color/balloon_text"
             android:background="@drawable/bg_overlay"
             android:padding="10dp"/>
 
