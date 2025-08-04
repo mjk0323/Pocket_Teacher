@@ -1,0 +1,20 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="16dp"
+    android:height="8dp"
+    android:viewportWidth="16"
+    android:viewportHeight="8">
+
+    <!-- 테두리용 삼각형 (맨 위 선 포함되지만 나중에 덮어씀) -->
+    <path
+        android:pathData="M0,0 L8,8 L16,0 Z"
+        android:strokeColor="#666666"
+        android:strokeWidth="1"
+        android:fillColor="@android:color/white"/>
+
+    <!-- 상단 테두리를 덮기 위한 흰색 선 (테두리 숨기기 효과) -->
+    <path
+        android:pathData="M0,0 L16,0"
+        android:strokeColor="@android:color/white"
+        android:strokeWidth="1"/>
+</vector>
+

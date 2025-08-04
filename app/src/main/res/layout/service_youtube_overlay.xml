@@ -1,23 +1,147 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:background="#80000000"
-    android:orientation="vertical"
-    android:padding="16dp">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
+    android:padding="8dp">
 
-    <TextView
-        android:id="@+id/overlay_text"
+    <!-- 처음 화면으로 나가기 -->
+    <LinearLayout
+        android:id="@+id/home_overlay_container"
+        android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="오버레이 텍스트"
-        android:textColor="#FFFFFF"
-        android:textSize="16sp" />
+        android:layout_gravity="top|start"
+        android:layout_marginTop="120dp"
+        android:layout_marginStart="24dp"
+        android:visibility="visible">
 
-    <Button
-        android:id="@+id/overlay_button"
+        <TextView
+            android:id="@+id/home_overlay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="처음 화면으로 나가기"
+            android:textSize="14sp"
+            android:textColor="@android:color/black"
+            android:background="@drawable/bg_overlay"
+            android:padding="10dp" />
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="8dp"
+            android:src="@drawable/balloon_tail"
+            android:layout_gravity="start"
+            android:layout_marginStart="20dp" />
+    </LinearLayout>
+
+    <!-- 쇼츠 -->
+    <LinearLayout
+        android:id="@+id/short_container"
+        android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="닫기" />
+        android:layout_gravity="top|center_horizontal"
+        android:layout_marginTop="180dp"
+        android:visibility="visible">
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/short_overlay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="짧은 영상 보기"
+            android:textSize="14sp"
+            android:textColor="@android:color/black"
+            android:background="@drawable/bg_overlay"
+            android:padding="10dp" />
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="8dp"
+            android:src="@drawable/balloon_tail"
+            android:layout_gravity="center" />
+    </LinearLayout>
+
+    <!-- 구독한 채널 -->
+    <LinearLayout
+        android:id="@+id/subs_list_container"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|end"
+        android:layout_marginTop="240dp"
+        android:layout_marginEnd="24dp"
+        android:visibility="visible">
+
+        <TextView
+            android:id="@+id/subs_list_overlay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="구독한 채널 모아보기"
+            android:textSize="14sp"
+            android:textColor="@android:color/black"
+            android:background="@drawable/bg_overlay"
+            android:padding="10dp" />
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="8dp"
+            android:src="@drawable/balloon_tail"
+            android:layout_gravity="end"
+            android:layout_marginEnd="20dp" />
+    </LinearLayout>
+
+    <!-- 내 프로필 -->
+    <LinearLayout
+        android:id="@+id/profile_container"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center"
+        android:layout_marginBottom="180dp"
+        android:visibility="visible">
+
+        <TextView
+            android:id="@+id/profile_overlay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="내 프로필 조회하기"
+            android:textSize="14sp"
+            android:textColor="@android:color/black"
+            android:background="@drawable/bg_overlay"
+            android:padding="10dp" />
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="8dp"
+            android:src="@drawable/balloon_tail"
+            android:layout_gravity="center" />
+    </LinearLayout>
+
+    <!-- 구독하기 -->
+    <LinearLayout
+        android:id="@+id/sub_btn_container"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center"
+        android:layout_marginBottom="120dp"
+        android:visibility="visible">
+
+        <TextView
+            android:id="@+id/sub_btn_overlay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="이 사람의 동영상 채널을 구독하기"
+            android:textSize="14sp"
+            android:textColor="@android:color/black"
+            android:background="@drawable/bg_overlay"
+            android:padding="10dp" />
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="8dp"
+            android:src="@drawable/balloon_tail"
+            android:layout_gravity="center" />
+    </LinearLayout>
+
+</FrameLayout>

@@ -2,11 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <!--    권한 요청     -->
+    <!-- 권한 요청 -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
-    <!-- 패키지 가시성 권한 (Android 11+) -->
+    <!-- 패키지 가시성 (Android 11 이상) -->
     <queries>
         <package android:name="com.kakao.talk" />
         <package android:name="com.google.android.youtube" />
@@ -21,18 +21,34 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Pocket_Teacher">
+
+        <!-- 서비스 등록 -->
         <service
             android:name=".KakaoOverlayService"
             android:enabled="true"
-            android:exported="true"/>
+            android:exported="true" />
+
         <service
             android:name=".YoutubeOverlayService"
             android:enabled="true"
-            android:exported="true"/>
+            android:exported="true" />
 
+        <service
+            android:name=".com.example.pocket_teacher.TrainOverlayService"
+            android:enabled="true"
+            android:exported="false"
+            android:permission="android.permission.SYSTEM_ALERT_WINDOW" />
+
+        <service
+            android:name=".BaseballOverlayService"
+            android:enabled="true"
+            android:exported="true" />
+
+        <!-- 화면(Activity) 등록 -->
         <activity
             android:name=".BaseballTicketActivity"
-            android:exported="false" /> <!-- 스플래시 화면을 앱 시작점으로 설정 -->
+            android:exported="false" />
+
         <activity
             android:name=".SplashActivity"
             android:exported="true"
@@ -40,25 +56,28 @@
             android:theme="@style/Theme.Pocket_Teacher">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".TrainTicketActivity"
             android:exported="false"
             android:label="@string/title_activity_train_ticket"
             android:theme="@style/Theme.Pocket_Teacher" />
+
         <activity
             android:name=".BookingActivity"
             android:exported="false"
             android:label="@string/title_activity_booking"
             android:theme="@style/Theme.Pocket_Teacher" />
+
         <activity
             android:name=".AppGuideActivity"
             android:exported="false"
             android:label="@string/title_activity_app_guide"
             android:theme="@style/Theme.Pocket_Teacher" />
+
         <activity
             android:name=".MainActivity"
             android:exported="false" />
