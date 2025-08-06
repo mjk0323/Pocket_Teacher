@@ -7,4 +7,5 @@
     <string name="title_activity_baseball_ticket">BaseballTicketActivity</string>
     <string name="title_activity_splash">SplashActivity</string>
     <string name="title_activity_train_overlay_service">TrainOverlayService</string>
+    <string name="accessibility_service_description">AccessibilityService</string>
 </resources>
