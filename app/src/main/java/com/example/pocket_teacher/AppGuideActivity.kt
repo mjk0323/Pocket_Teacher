@@ -16,6 +16,20 @@ class AppGuideActivity : AppCompatActivity() {
         setContentView(R.layout.activity_app_guide)
 
         checkOverlayPermission()
+        if (!AccessibilityHelper.isAccessibilityServiceEnabled(this)) {
+            // 다이얼로그로 안내 후 설정으로 이동
+            AlertDialog.Builder(this)
+                .setTitle("접근성 권한 필요")
+                .setMessage("카카오톡 버튼 정보를 수집하려면 접근성 서비스를 켜야 합니다.")
+                .setPositiveButton("설정으로 이동") { _, _ ->
+                    AccessibilityHelper.openAccessibilitySettings(this)
+                }
+                .setNegativeButton("취소", null)
+                .show()
+        } else {
+            // 이미 켜져있으면 정상 진행
+            Log.d("ACCESS", "접근성 서비스 활성화됨!")
+        }
 
         val kakaoPackage = "com.kakao.talk" // 카톡 앱 패키지 주소
         val intentKakao = packageManager.getLaunchIntentForPackage(kakaoPackage)
