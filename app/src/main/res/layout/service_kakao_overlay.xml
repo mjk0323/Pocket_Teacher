@@ -4,17 +4,181 @@
     android:layout_height="match_parent"
     android:background="@android:color/transparent"
     android:padding="8dp">
+<!--  상단  -->
+    <!-- 검색 버튼  -->
+    <LinearLayout
+        android:id="@+id/search_container"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="100dp"
+        android:visibility="gone">
 
+        <TextView
+            android:id="@+id/search_overlay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="친구나 채널 검색하기"
+            android:textSize="14sp"
+            android:textColor="@color/balloon_text"
+            android:background="@drawable/bg_overlay"
+            android:padding="10dp"/>
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="8dp"
+            android:src="@drawable/balloon_tail"
+            android:layout_gravity="center"/>
+    </LinearLayout>
+
+    <!-- 친구 추가 버튼 -->
+    <LinearLayout
+        android:id="@+id/add_friend_container"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="180dp"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/add_friend_overlay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="친구 새로 추가하기"
+            android:textSize="14sp"
+            android:textColor="@color/balloon_text"
+            android:background="@drawable/bg_overlay"
+            android:padding="10dp"/>
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="8dp"
+            android:src="@drawable/balloon_tail"
+            android:layout_gravity="center"/>
+    </LinearLayout>
+
+    <!-- 톡뮤직 버튼  -->
+    <LinearLayout
+        android:id="@+id/talk_music_container"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="100dp"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/talk_music_overlay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="프로필 음악 듣기"
+            android:textSize="14sp"
+            android:textColor="@color/balloon_text"
+            android:background="@drawable/bg_overlay"
+            android:padding="10dp"/>
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="8dp"
+            android:src="@drawable/balloon_tail"
+            android:layout_gravity="center"/>
+    </LinearLayout>
+
+    <!-- 옵션 버튼  -->
+    <LinearLayout
+        android:id="@+id/option_container"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="100dp"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/option_overlay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="설정"
+            android:textSize="14sp"
+            android:textColor="@color/balloon_text"
+            android:background="@drawable/bg_overlay"
+            android:padding="10dp"/>
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="8dp"
+            android:src="@drawable/balloon_tail"
+            android:layout_gravity="center"/>
+    </LinearLayout>
+
+    <!-- 검색 버튼  -->
+    <LinearLayout
+        android:id="@+id/openchat_category_container"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="100dp"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/openchat_category_overlay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="오픈채팅 주제 선택하기"
+            android:textSize="14sp"
+            android:textColor="@color/balloon_text"
+            android:background="@drawable/bg_overlay"
+            android:padding="10dp"/>
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="8dp"
+            android:src="@drawable/balloon_tail"
+            android:layout_gravity="center"/>
+    </LinearLayout>
+
+<!-- 메인 -->
+    <!-- 프로필 보기 -->
+    <LinearLayout
+        android:id="@+id/profile_container"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="100dp"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/profile_overlay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="내 프로필을 확인"
+            android:textSize="14sp"
+            android:textColor="@color/balloon_text"
+            android:background="@drawable/bg_overlay"
+            android:padding="10dp"/>
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="8dp"
+            android:src="@drawable/balloon_tail"
+            android:layout_gravity="center"/>
+    </LinearLayout>
+
+<!--  하단  -->
     <!-- 친구 탭 -->
     <LinearLayout
-        android:id="@+id/freind_container"
+        android:id="@+id/friend_container"
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|start"
         android:layout_marginStart="24dp"
         android:layout_marginBottom="200dp"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/friend_overlay"
@@ -41,7 +205,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center_horizontal"
         android:layout_marginBottom="140dp"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/chat_overlay"
@@ -69,7 +233,7 @@
         android:layout_gravity="bottom|end"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="200dp"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/openchat_overlay"
@@ -88,22 +252,22 @@
             android:layout_gravity="center"/>
     </LinearLayout>
 
-    <!-- 친구 추가 버튼 -->
+    <!-- 쇼핑 탭 -->
     <LinearLayout
-        android:id="@+id/add_friend_container"
+        android:id="@+id/shopping_container"
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="top|end"
-        android:layout_marginEnd="20dp"
-        android:layout_marginTop="180dp"
-        android:visibility="visible">
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="200dp"
+        android:visibility="gone">
 
         <TextView
-            android:id="@+id/add_friend_overlay"
+            android:id="@+id/shopping_overlay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="친구 새로 추가하기"
+            android:text="쇼핑하기"
             android:textSize="14sp"
             android:textColor="@color/balloon_text"
             android:background="@drawable/bg_overlay"
@@ -116,22 +280,22 @@
             android:layout_gravity="center"/>
     </LinearLayout>
 
-    <!-- 프로필 보기 -->
+    <!-- 더보기 탭 -->
     <LinearLayout
-        android:id="@+id/profile_container"
+        android:id="@+id/etc_container"
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="top|start"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="100dp"
-        android:visibility="visible">
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="200dp"
+        android:visibility="gone">
 
         <TextView
-            android:id="@+id/profile_overlay"
+            android:id="@+id/etc_overlay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="내 프로필을 확인"
+            android:text="기타 기능"
             android:textSize="14sp"
             android:textColor="@color/balloon_text"
             android:background="@drawable/bg_overlay"
