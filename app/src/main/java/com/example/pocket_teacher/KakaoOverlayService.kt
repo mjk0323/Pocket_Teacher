@@ -10,8 +10,9 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
+import android.widget.AbsoluteLayout
 import android.widget.FrameLayout
-import android.widget.LinearLayout
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.annotation.RequiresApi
 
 class KakaoOverlayService : Service() {
@@ -101,20 +102,20 @@ class KakaoOverlayService : Service() {
     private fun updateOverlayVisibility(buttonInfoList: List<String>) {
         overlayView?.let { view ->
             // 먼저 모든 컨테이너를 GONE으로 설정
-            view.findViewById<LinearLayout>(R.id.search_container)?.visibility = View.GONE
-            view.findViewById<LinearLayout>(R.id.add_friend_container)?.visibility = View.GONE
-            view.findViewById<LinearLayout>(R.id.friend_container)?.visibility = View.GONE
-            view.findViewById<LinearLayout>(R.id.talk_music_container)?.visibility = View.GONE
-            view.findViewById<LinearLayout>(R.id.option_container)?.visibility = View.GONE
+            view.findViewById<View>(R.id.search_container)?.visibility = View.GONE
+            view.findViewById<View>(R.id.add_friend_container)?.visibility = View.GONE
+            view.findViewById<View>(R.id.friend_container)?.visibility = View.GONE
+            view.findViewById<View>(R.id.talk_music_container)?.visibility = View.GONE
+            view.findViewById<View>(R.id.option_container)?.visibility = View.GONE
 
-            view.findViewById<LinearLayout>(R.id.profile_container)?.visibility = View.GONE
-            view.findViewById<LinearLayout>(R.id.openchat_category_container)?.visibility = View.GONE
+            view.findViewById<View>(R.id.profile_container)?.visibility = View.GONE
+            view.findViewById<View>(R.id.openchat_category_container)?.visibility = View.GONE
 
-            view.findViewById<LinearLayout>(R.id.friend_container)?.visibility = View.GONE
-            view.findViewById<LinearLayout>(R.id.chat_container)?.visibility = View.GONE
-            view.findViewById<LinearLayout>(R.id.openchat_container)?.visibility = View.GONE
-            view.findViewById<LinearLayout>(R.id.shopping_container)?.visibility = View.GONE
-            view.findViewById<LinearLayout>(R.id.etc_container)?.visibility = View.GONE
+            view.findViewById<View>(R.id.friend_container)?.visibility = View.GONE
+            view.findViewById<View>(R.id.chat_container)?.visibility = View.GONE
+            view.findViewById<View>(R.id.openchat_container)?.visibility = View.GONE
+            view.findViewById<View>(R.id.shopping_container)?.visibility = View.GONE
+            view.findViewById<View>(R.id.etc_container)?.visibility = View.GONE
 
             // 버튼 정보를 체크해서 해당하는 것들만 VISIBLE로 변경
             buttonInfoList.forEach { buttonInfo ->
@@ -134,113 +135,125 @@ class KakaoOverlayService : Service() {
                 when {
                     // 상단 탭
                     combinedText.contains("검색") -> {
-                        val container = view.findViewById<LinearLayout>(R.id.search_container)
+                        val container = view.findViewById<View>(R.id.search_container)
                         container?.let {
                             it.visibility = View.VISIBLE
-                            adjustContainerPosition(it, centerX, centerY + 100)
+                            topContainerPosition(it, left, top)
                         }
                     }
                     combinedText.contains("친구") && combinedText.contains("추가") -> {
-                        val container = view.findViewById<LinearLayout>(R.id.add_friend_container)
+                        val container = view.findViewById<View>(R.id.add_friend_container)
                         container?.let {
                             it.visibility = View.VISIBLE
-                            adjustContainerPosition(it, centerX, centerY) // 버튼 오른쪽 위
+                            topContainerPosition(it, left, top) // 버튼 오른쪽 위
                         }
                     }
                     combinedText.contains("톡뮤직") -> {
-                        val container = view.findViewById<LinearLayout>(R.id.talk_music_container)
+                        val container = view.findViewById<View>(R.id.talk_music_container)
                         container?.let {
                             it.visibility = View.VISIBLE
-                            adjustContainerPosition(it, centerX, centerY)
+                            topContainerPosition(it, left, top)
                         }
                     }
                     combinedText.contains("옵션") && combinedText.contains("더보기") -> {
-                        val container = view.findViewById<LinearLayout>(R.id.option_container)
+                        val container = view.findViewById<View>(R.id.option_container)
                         container?.let {
                             it.visibility = View.VISIBLE
-                            adjustContainerPosition(it, centerX, centerY)
+                            topContainerPosition(it, left, top)
                         }
                     }
 
                     // 오픈채팅 상단
                     combinedText.contains("지금") && combinedText.contains("뜨는") -> {
-                        val container = view.findViewById<LinearLayout>(R.id.openchat_category_container)
+                        val container = view.findViewById<View>(R.id.openchat_category_container)
                         container?.let {
                             it.visibility = View.VISIBLE
-                            adjustContainerPosition(it, centerX, centerY)
+                            topContainerPosition(it, left, top)
                         }
                     }
 
-                    // 하단 탭
+                    // 하단 탭 : y좌표 top-200으로 설정 필요
                     combinedText.contains("친구") && combinedText.contains("탭") -> {
-                        val container = view.findViewById<LinearLayout>(R.id.friend_container)
+                        val container = view.findViewById<View>(R.id.friend_container)
                         container?.let {
                             it.visibility = View.VISIBLE
-                            adjustContainerPosition(it, centerX, centerY)
+                            bottomContainerPosition(it, left, top-200)
                         }
                     }
                     combinedText.contains("채팅 탭") && combinedText.contains("탭") -> {
-                        val container = view.findViewById<LinearLayout>(R.id.chat_container)
+                        val container = view.findViewById<View>(R.id.chat_container)
                         container?.let {
                             it.visibility = View.VISIBLE
-                            adjustContainerPosition(it, centerX, centerY)
+                            bottomContainerPosition(it, left, top-200)
                         }
                     }
-                    combinedText.contains("Open") && combinedText.contains("Chat")
-                            && combinedText.contains("Tab") -> {
-                        val container = view.findViewById<LinearLayout>(R.id.openchat_container)
+                    combinedText.contains("open")-> {
+                        val container = view.findViewById<View>(R.id.openchat_container)
                         container?.let {
                             it.visibility = View.VISIBLE
-                            adjustContainerPosition(it, centerX, centerY)
+                            bottomContainerPosition(it, left, top-200)
                         }
                     }
                     combinedText.contains("쇼핑 탭") -> {
-                        val container = view.findViewById<LinearLayout>(R.id.shopping_container)
+                        val container = view.findViewById<View>(R.id.shopping_container)
                         container?.let {
                             it.visibility = View.VISIBLE
-                            adjustContainerPosition(it, centerX, centerY)
+                            bottomContainerPosition(it, left, top-200)
                         }
                     }
                     combinedText.contains("더보기 탭") -> {
-                        val container = view.findViewById<LinearLayout>(R.id.etc_container)
+                        val container = view.findViewById<View>(R.id.etc_container)
                         container?.let {
                             it.visibility = View.VISIBLE
-                            adjustContainerPosition(it, centerX, centerY)
+                            bottomContainerPosition(it, left, top-200)
                         }
                     }
                 }
             }
-
-            Log.e("OVERLAY", "오버레이 visibility 업데이트 완료")
         }
     }
 
-    private fun adjustContainerPosition(container: View, x: Int, y: Int) {
+    private fun topContainerPosition(container: View, x: Int, y: Int) {
         container.post {
-            // 현재 LayoutParams 가져오기
-            var layoutParams = container.layoutParams
+            // ConstraintLayout.LayoutParams로 캐스팅
+            val constraintParams = container.layoutParams as ConstraintLayout.LayoutParams
 
-            // LayoutParams가 FrameLayout.LayoutParams가 아니면 새로 생성
-            if (layoutParams !is FrameLayout.LayoutParams) {
-                layoutParams = FrameLayout.LayoutParams(
-                    FrameLayout.LayoutParams.WRAP_CONTENT,
-                    FrameLayout.LayoutParams.WRAP_CONTENT
-                )
-            }
+            // 부모의 왼쪽 위 모서리를 기준점으로 설정
+            constraintParams.startToStart = ConstraintLayout.LayoutParams.PARENT_ID
+            constraintParams.topToTop = ConstraintLayout.LayoutParams.PARENT_ID
 
-            val frameParams = layoutParams as FrameLayout.LayoutParams
+            // 절대 좌표를 마진으로 설정
+            constraintParams.leftMargin = x-30
+            constraintParams.topMargin = y
 
-            // 절대 위치 설정
-            frameParams.gravity = Gravity.NO_GRAVITY
-            frameParams.leftMargin = x - 100 // 중앙 정렬을 위해 절반만큼 빼기
-            frameParams.topMargin = y - 50
-            frameParams.rightMargin = 0
-            frameParams.bottomMargin = 0
+            // 다른 마진은 0으로 초기화
+            constraintParams.rightMargin = 0
+            constraintParams.bottomMargin = 0
 
-            container.layoutParams = frameParams
+            container.layoutParams = constraintParams
             container.requestLayout()
+        }
+    }
 
-            Log.e("OVERLAY", "간단 위치 조정: 컨테이너를 ($x, $y) 위치로 이동")
+    private fun bottomContainerPosition(container: View, x: Int, y: Int) {
+        container.post {
+            // ConstraintLayout.LayoutParams로 캐스팅
+            val constraintParams = container.layoutParams as ConstraintLayout.LayoutParams
+
+            // 부모의 왼쪽 위 모서리를 기준점으로 설정
+            constraintParams.startToStart = ConstraintLayout.LayoutParams.PARENT_ID
+            constraintParams.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
+
+            // 절대 좌표를 마진으로 설정
+            constraintParams.leftMargin = x
+            constraintParams.topMargin = 0
+
+            // 다른 마진은 0으로 초기화
+            constraintParams.rightMargin = 0
+            constraintParams.bottomMargin = -y
+
+            container.layoutParams = constraintParams
+            container.requestLayout()
         }
     }
 
