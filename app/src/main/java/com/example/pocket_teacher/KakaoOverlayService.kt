@@ -125,10 +125,7 @@ class KakaoOverlayService : Service() {
                 val top = positions[1].toInt()
                 val right = positions[2].toInt()
                 val bottom = positions[3].toInt()
-                val centerX = (left + right) / 2
-                val centerY = (top + bottom) / 2
 
-                val text = parts[3].takeIf { it.isNotEmpty() } // 텍스트
                 val description = parts[4].takeIf { it.isNotEmpty() } // 설명
                 val combinedText = (description ?: "").lowercase()
 

@@ -15,7 +15,7 @@ object AccessibilityHelper {
         )
 
         if (accessibilityEnabled == 1) {
-            val service = "${context.packageName}/.KakaoAccessibilityService"
+            val service = "${context.packageName}/.AppAccessibilityService"
             val enabledServices = Settings.Secure.getString(
                 context.contentResolver,
                 Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES
