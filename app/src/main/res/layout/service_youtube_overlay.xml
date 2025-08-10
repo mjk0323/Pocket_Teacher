@@ -1,22 +1,249 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/transparent"
     android:padding="8dp">
 
     <!-- 아래 말풍선은 피그마에 있는 화면 참고해서 만듦 -->
-
-    <!-- 처음 화면으로 나가기 -->
+    <!-- 외부 cast -->
     <LinearLayout
-        android:id="@+id/home_overlay_container"
+        android:id="@+id/cast_container"
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="top|start"
+        android:layout_marginBottom="120dp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/cast_overlay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="다른 기기에 연결"
+            android:textSize="14sp"
+            android:textColor="@color/balloon_text"
+            android:background="@drawable/bg_overlay"
+            android:padding="10dp" />
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="8dp"
+            android:src="@drawable/balloon_tail"
+            android:layout_gravity="center" />
+    </LinearLayout>
+
+    <!-- 검색 -->
+    <LinearLayout
+        android:id="@+id/search_container"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="120dp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/search_overlay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="검색"
+            android:textSize="14sp"
+            android:textColor="@color/balloon_text"
+            android:background="@drawable/bg_overlay"
+            android:padding="10dp" />
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="8dp"
+            android:src="@drawable/balloon_tail"
+            android:layout_gravity="center" />
+    </LinearLayout>
+
+    <!-- 알림 -->
+    <LinearLayout
+        android:id="@+id/notifications_container"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="120dp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/notifications_overlay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="새 소식"
+            android:textSize="14sp"
+            android:textColor="@color/balloon_text"
+            android:background="@drawable/bg_overlay"
+            android:padding="10dp" />
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="8dp"
+            android:src="@drawable/balloon_tail"
+            android:layout_gravity="center" />
+    </LinearLayout>
+
+    <!-- 더보기 -->
+    <LinearLayout
+        android:id="@+id/more_container"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="120dp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/more_overlay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="더보기"
+            android:textSize="14sp"
+            android:textColor="@color/balloon_text"
+            android:background="@drawable/bg_overlay"
+            android:padding="10dp" />
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="8dp"
+            android:src="@drawable/balloon_tail"
+            android:layout_gravity="center" />
+    </LinearLayout>
+
+    <!-- 좋아요 -->
+    <LinearLayout
+        android:id="@+id/like_container"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="120dp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/like_overlay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="좋아요"
+            android:textSize="14sp"
+            android:textColor="@color/balloon_text"
+            android:background="@drawable/bg_overlay"
+            android:padding="10dp" />
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="8dp"
+            android:src="@drawable/balloon_tail"
+            android:layout_gravity="center" />
+    </LinearLayout>
+
+    <!-- 싫어요 -->
+    <LinearLayout
+        android:id="@+id/dislike_container"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="120dp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/dislike_overlay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="싫어요"
+            android:textSize="14sp"
+            android:textColor="@color/balloon_text"
+            android:background="@drawable/bg_overlay"
+            android:padding="10dp" />
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="8dp"
+            android:src="@drawable/balloon_tail"
+            android:layout_gravity="center" />
+    </LinearLayout>
+
+    <!-- 댓글보기 -->
+    <LinearLayout
+        android:id="@+id/comments_container"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="120dp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/comments_overlay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="댓글보기"
+            android:textSize="14sp"
+            android:textColor="@color/balloon_text"
+            android:background="@drawable/bg_overlay"
+            android:padding="10dp" />
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="8dp"
+            android:src="@drawable/balloon_tail"
+            android:layout_gravity="center" />
+    </LinearLayout>
+
+    <!-- 공유하기 -->
+    <LinearLayout
+        android:id="@+id/share_container"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="120dp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/share_overlay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="공유하기"
+            android:textSize="14sp"
+            android:textColor="@color/balloon_text"
+            android:background="@drawable/bg_overlay"
+            android:padding="10dp" />
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="8dp"
+            android:src="@drawable/balloon_tail"
+            android:layout_gravity="center" />
+    </LinearLayout>
+
+    <!-- 하단 -->
+    <!-- 홈 화면 -->
+    <LinearLayout
+        android:id="@+id/home_container"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="120dp"
         android:layout_marginStart="24dp"
-        android:visibility="gone">
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/home_overlay"
@@ -38,13 +265,15 @@
 
     <!-- 쇼츠 -->
     <LinearLayout
-        android:id="@+id/short_container"
+        android:id="@+id/shorts_container"
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="top|center_horizontal"
         android:layout_marginTop="180dp"
-        android:visibility="gone">
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/short_overlay"
@@ -63,22 +292,52 @@
             android:layout_gravity="center" />
     </LinearLayout>
 
-    <!-- 구독한 채널 -->
+    <!-- 영상 제작 -->
     <LinearLayout
-        android:id="@+id/subs_list_container"
+        android:id="@+id/create_container"
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="top|end"
-        android:layout_marginTop="240dp"
-        android:layout_marginEnd="24dp"
-        android:visibility="gone">
+        android:layout_marginTop="180dp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/subs_list_overlay"
+            android:id="@+id/create_overlay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="구독한 채널 모아보기"
+            android:text="영상 만들기"
+            android:textSize="14sp"
+            android:textColor="@color/balloon_text"
+            android:background="@drawable/bg_overlay"
+            android:padding="10dp" />
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="8dp"
+            android:src="@drawable/balloon_tail"
+            android:layout_gravity="center" />
+    </LinearLayout>
+
+    <!-- 구독한 채널 -->
+    <LinearLayout
+        android:id="@+id/subscriptions_container"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="240dp"
+        android:layout_marginEnd="24dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/subscriptions_overlay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="구독한 채널 목록"
             android:textSize="14sp"
             android:textColor="@color/balloon_text"
             android:background="@drawable/bg_overlay"
@@ -94,19 +353,21 @@
 
     <!-- 내 프로필 -->
     <LinearLayout
-        android:id="@+id/profile_container"
+        android:id="@+id/you_container"
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center"
         android:layout_marginBottom="180dp"
-        android:visibility="gone">
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <TextView
-            android:id="@+id/profile_overlay"
+            android:id="@+id/you_overlay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="내 프로필 조회하기"
+            android:text="내 프로필"
             android:textSize="14sp"
             android:textColor="@color/balloon_text"
             android:background="@drawable/bg_overlay"
@@ -125,15 +386,17 @@
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center"
         android:layout_marginBottom="120dp"
-        android:visibility="gone">
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <TextView
             android:id="@+id/sub_btn_overlay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="이 사람의 동영상 채널을 구독하기"
+            android:text="이 채널을 구독"
             android:textSize="14sp"
             android:textColor="@color/balloon_text"
             android:background="@drawable/bg_overlay"
@@ -146,4 +409,4 @@
             android:layout_gravity="center" />
     </LinearLayout>
 
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
