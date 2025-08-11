@@ -9,7 +9,6 @@ import android.widget.LinearLayout
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
-import com.example.pocket_teacher.com.example.pocket_teacher.TrainOverlayService
 
 class TrainTicketActivity : AppCompatActivity() {
 
