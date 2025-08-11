@@ -46,6 +46,18 @@ class AppAccessibilityService : AccessibilityService() {
             val intent = when(packageName) {
                 "com.kakao.talk" -> Intent(this, KakaoOverlayService::class.java)
                 "com.google.android.youtube" -> Intent(this, YoutubeOverlayService::class.java)
+                "com.android.chrome",           // Chrome
+                "com.sec.android.app.sbrowser", // Samsung Internet
+                "org.mozilla.firefox",          // Firefox
+                "com.opera.browser",            // Opera
+                "com.microsoft.emmx",           // Microsoft Edge
+                "com.UCMobile.intl",            // UC Browser
+                "com.brave.browser"             // Brave Browser
+                    -> when(ButtonState.selectedService) {
+                    "TRAIN" -> Intent(this, TrainOverlayService::class.java)
+                    "BASEBALL" -> Intent(this, BaseballOverlayService::class.java)
+                    else -> null
+                }
                 else -> null
             }
 

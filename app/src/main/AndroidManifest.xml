@@ -29,7 +29,7 @@
             android:enabled="true"
             android:exported="true" />
         <service
-            android:name=".com.example.pocket_teacher.TrainOverlayService"
+            android:name=".TrainOverlayService"
             android:enabled="true"
             android:exported="false"
             android:permission="android.permission.SYSTEM_ALERT_WINDOW" />
