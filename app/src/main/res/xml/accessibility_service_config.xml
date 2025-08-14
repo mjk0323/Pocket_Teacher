@@ -2,7 +2,7 @@
 <accessibility-service xmlns:android="http://schemas.android.com/apk/res/android"
     android:packageNames="com.kakao.talk, com.google.android.youtube,
     com.android.chrome, com.sec.android.app.sbrowser, org.mozilla.firefox,
-    com.opera.browser, com.microsoft.emmx, com.UCMobile.intl, com.brave.browser"
+    com.brave.browser"
     android:accessibilityEventTypes="typeAllMask"
     android:accessibilityFeedbackType="feedbackAllMask"
     android:canPerformGestures="true"
