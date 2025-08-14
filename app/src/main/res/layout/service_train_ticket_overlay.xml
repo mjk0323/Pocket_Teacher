@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/transparent"
@@ -11,13 +12,14 @@
     <!-- 출발역 말풍선 -->
     <LinearLayout
         android:id="@+id/departure_container"
-        android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="top|start"
+        android:orientation="vertical"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="120dp"
-        android:layout_marginStart="24dp"
-        android:visibility="visible">
+        android:layout_marginStart="24dp">
 
         <TextView
             android:id="@+id/departure_overlay"
@@ -37,16 +39,47 @@
             android:layout_marginStart="20dp" />
     </LinearLayout>
 
+    <!-- 출발지/도착지 전환 말풍선 -->
+    <LinearLayout
+        android:id="@+id/change_location_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="120dp"
+        android:layout_marginStart="24dp">
+
+        <TextView
+            android:id="@+id/change_location_overlay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="출발역과\n도착역\n전환"
+            android:textSize="14sp"
+            android:textColor="@color/balloon_text"
+            android:background="@drawable/bg_overlay"
+            android:padding="10dp" />
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="8dp"
+            android:src="@drawable/balloon_tail"
+            android:layout_gravity="start"
+            android:layout_marginStart="20dp" />
+    </LinearLayout>
+
     <!-- 도착역 말풍선 -->
     <LinearLayout
         android:id="@+id/arrival_container"
-        android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="top|start"
+        android:orientation="vertical"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="180dp"
-        android:layout_marginStart="24dp"
-        android:visibility="visible">
+        android:layout_marginStart="24dp">
 
         <TextView
             android:id="@+id/arrival_overlay"
@@ -66,15 +99,47 @@
             android:layout_marginStart="20dp" />
     </LinearLayout>
 
+    <!-- 왕복/편도 선택 말풍선 -->
+    <LinearLayout
+        android:id="@+id/travel_type_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="180dp"
+        android:layout_marginStart="24dp">
+
+        <TextView
+            android:id="@+id/travel_type_overlay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="왕복/편도\n선택"
+            android:textSize="14sp"
+            android:textColor="@color/balloon_text"
+            android:background="@drawable/bg_overlay"
+            android:padding="10dp" />
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="8dp"
+            android:src="@drawable/balloon_tail"
+            android:layout_gravity="start"
+            android:layout_marginStart="20dp" />
+    </LinearLayout>
+
     <!-- 출발일 말풍선 -->
     <LinearLayout
         android:id="@+id/date_select_container"
-        android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="top|center_horizontal"
-        android:layout_marginTop="180dp"
-        android:visibility="visible">
+        android:orientation="vertical"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="180dp">
 
         <TextView
             android:id="@+id/date_select_overlay"
@@ -96,13 +161,14 @@
     <!-- 인원수 예매 말풍선 -->
     <LinearLayout
         android:id="@+id/passenger_count_container"
-        android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="top|end"
+        android:orientation="vertical"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="240dp"
-        android:layout_marginEnd="24dp"
-        android:visibility="visible">
+        android:layout_marginEnd="24dp">
 
         <TextView
             android:id="@+id/passenger_count_overlay"
@@ -122,15 +188,76 @@
             android:layout_marginEnd="20dp" />
     </LinearLayout>
 
+    <!-- 기타 메뉴 말풍선 -->
+    <LinearLayout
+        android:id="@+id/etc_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="240dp"
+        android:layout_marginEnd="24dp">
+
+        <TextView
+            android:id="@+id/etc_overlay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="다른 메뉴\n보기"
+            android:textSize="14sp"
+            android:textColor="@color/balloon_text"
+            android:background="@drawable/bg_overlay"
+            android:padding="10dp" />
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="8dp"
+            android:src="@drawable/balloon_tail"
+            android:layout_gravity="end"
+            android:layout_marginEnd="20dp" />
+    </LinearLayout>
+
+    <!-- 검색 말풍선 -->
+    <LinearLayout
+        android:id="@+id/search_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="300dp">
+
+        <TextView
+            android:id="@+id/search_overlay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="검색하기"
+            android:textSize="14sp"
+            android:textColor="@color/balloon_text"
+            android:background="@drawable/bg_overlay"
+            android:padding="10dp" />
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="8dp"
+            android:src="@drawable/balloon_tail"
+            android:layout_gravity="center" />
+    </LinearLayout>
+
     <!-- SNS 로그인 (카카오톡) 말풍선 (이건 예매내역 확인 로그인창 아래에 위치해 있음) -->
     <LinearLayout
         android:id="@+id/kakao_login_container"
-        android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center"
-        android:layout_marginBottom="180dp"
-        android:visibility="visible">
+        android:orientation="vertical"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="180dp">
 
         <TextView
             android:id="@+id/kakao_login_overlay"
@@ -156,7 +283,8 @@
         android:background="@drawable/bg_highlight_red"
         android:visibility="visible"
         android:clickable="false"
-        android:focusable="false"/>
+        android:focusable="false"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
