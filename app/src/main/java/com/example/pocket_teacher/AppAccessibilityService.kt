@@ -15,23 +15,44 @@ class AppAccessibilityService : AccessibilityService() {
     }
 
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
-        // 카카오톡에서만 동작
-        if (event?.packageName == "com.kakao.talk") {
-            // 화면 변화나 윈도우 상태 변경시 버튼 수집
-            if (event.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED ||
-                event.eventType == AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED) {
+        when(event?.packageName){
+            "com.kakao.talk"->
+                when(event.eventType){
+                    AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED,
+                    AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED ->
+                        collectButtons("com.kakao.talk")
+                }
+            "com.google.android.youtube"->
+                when(event.eventType){
+                    AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED,
+                    AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED ->
+                        collectButtons("com.google.android.youtube")
+                }
+            "com.android.chrome" ->
+                when(event.eventType) {
+                    AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED,
+                    AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED ->
+                        collectButtons("com.android.chrome")
+                }
+            "com.sec.android.app.sbrowser" ->
+                when(event.eventType) {
+                    AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED,
+                    AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED ->
+                        collectButtons("com.sec.android.app.sbrowser")
+                }
+            "org.mozilla.firefox" ->
+                when(event.eventType) {
+                    AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED,
+                    AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED ->
+                        collectButtons("org.mozilla.firefox")
+                }
+            "com.brave.browser"->
+                when(event.eventType) {
+                    AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED,
+                    AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED ->
+                        collectButtons("com.brave.browser")
+                }
 
-                collectButtons("com.kakao.talk")
-            }
-        }
-        // 유튜브에서만 동작
-        else if (event?.packageName == "com.google.android.youtube") {
-            // 화면 변화나 윈도우 상태 변경시 버튼 수집
-            if (event.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED ||
-                event.eventType == AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED) {
-
-                collectButtons("com.google.android.youtube")
-            }
         }
     }
 
@@ -49,9 +70,6 @@ class AppAccessibilityService : AccessibilityService() {
                 "com.android.chrome",           // Chrome
                 "com.sec.android.app.sbrowser", // Samsung Internet
                 "org.mozilla.firefox",          // Firefox
-                "com.opera.browser",            // Opera
-                "com.microsoft.emmx",           // Microsoft Edge
-                "com.UCMobile.intl",            // UC Browser
                 "com.brave.browser"             // Brave Browser
                     -> when(ButtonState.selectedService) {
                     "TRAIN" -> Intent(this, TrainOverlayService::class.java)
@@ -74,7 +92,8 @@ class AppAccessibilityService : AccessibilityService() {
         // 버튼이나 클릭 가능한 요소 확인
         if (node.className == "android.widget.Button" ||
             node.className == "android.widget.ImageButton" ||
-            node.isClickable) {
+            node.isClickable ||
+            node.isLongClickable) {
 
             val bounds = Rect()
             node.getBoundsInScreen(bounds)
