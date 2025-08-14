@@ -75,7 +75,7 @@ class TrainOverlayService : Service() {
         windowManager = getSystemService(WINDOW_SERVICE) as WindowManager
 
         // 오버레이 뷰 생성
-        overlayView = LayoutInflater.from(this).inflate(R.layout.service_kakao_overlay, null)
+        overlayView = LayoutInflater.from(this).inflate(R.layout.service_train_ticket_overlay, null)
 
         // 윈도우 매니저 파라미터 설정 - 터치 이벤트 완전히 통과시키기
         val params = WindowManager.LayoutParams(
@@ -102,7 +102,15 @@ class TrainOverlayService : Service() {
     private fun updateOverlayVisibility(buttonInfoList: List<String>) {
         overlayView?.let { view ->
             // 먼저 모든 컨테이너를 GONE으로 설정
+            view.findViewById<View>(R.id.departure_container)?.visibility = View.GONE
+            view.findViewById<View>(R.id.change_location_container)?.visibility = View.GONE
+            view.findViewById<View>(R.id.arrival_container)?.visibility = View.GONE
+            view.findViewById<View>(R.id.date_select_container)?.visibility = View.GONE
+            view.findViewById<View>(R.id.travel_type_container)?.visibility = View.GONE
+            view.findViewById<View>(R.id.passenger_count_container)?.visibility = View.GONE
             view.findViewById<View>(R.id.etc_container)?.visibility = View.GONE
+            view.findViewById<View>(R.id.kakao_login_container)?.visibility = View.GONE
+            view.findViewById<View>(R.id.highlight_box)?.visibility = View.GONE
 
             // 버튼 정보를 체크해서 해당하는 것들만 VISIBLE로 변경
             buttonInfoList.forEach { buttonInfo ->
@@ -113,19 +121,68 @@ class TrainOverlayService : Service() {
                 val right = positions[2].toInt()
                 val bottom = positions[3].toInt()
 
+                val text = parts[3].takeIf { it.isNotEmpty() } // 텍스트
                 val description = parts[4].takeIf { it.isNotEmpty() } // 설명
-                val combinedText = (description ?: "").lowercase()
+                val combinedText = (text ?: description ?: "").lowercase()
 
                 when {
                     // 상단 탭
-                    combinedText.contains("검색") -> {
-                        val container = view.findViewById<View>(R.id.search_container)
+                    combinedText.contains("출발역") -> {
+                        val container = view.findViewById<View>(R.id.departure_container)
                         container?.let {
                             it.visibility = View.VISIBLE
                             topContainerPosition(it, left, top)
                         }
                     }
-
+                    combinedText.contains("출발지/도착지") -> {
+                        val container = view.findViewById<View>(R.id.change_location_container)
+                        container?.let {
+                            it.visibility = View.VISIBLE
+                            topContainerPosition(it, left, top)
+                        }
+                    }
+                    combinedText.contains("도착역") -> {
+                        val container = view.findViewById<View>(R.id.arrival_container)
+                        container?.let {
+                            it.visibility = View.VISIBLE
+                            topContainerPosition(it, left, top)
+                        }
+                    }
+                    combinedText.contains("왕복") || combinedText.contains("편도") -> {
+                        val container = view.findViewById<View>(R.id.travel_type_container)
+                        container?.let {
+                            it.visibility = View.VISIBLE
+                            topContainerPosition(it, left, top)
+                        }
+                    }
+                    combinedText.contains("출발일") -> {
+                        val container = view.findViewById<View>(R.id.date_select_container)
+                        container?.let {
+                            it.visibility = View.VISIBLE
+                            topContainerPosition(it, left, top)
+                        }
+                    }
+                    combinedText.contains("총")&&combinedText.contains("명") -> {
+                        val container = view.findViewById<View>(R.id.passenger_count_container)
+                        container?.let {
+                            it.visibility = View.VISIBLE
+                            topContainerPosition(it, left, top)
+                        }
+                    }
+                    combinedText.contains("확대")&&combinedText.contains("펼치기") -> {
+                        val container = view.findViewById<View>(R.id.etc_container)
+                        container?.let {
+                            it.visibility = View.VISIBLE
+                            topContainerPosition(it, left, top)
+                        }
+                    }
+                    combinedText.contains("카카오")&&combinedText.contains("로그인") -> {
+                        val container = view.findViewById<View>(R.id.kakao_login_container)
+                        container?.let {
+                            it.visibility = View.VISIBLE
+                            topContainerPosition(it, left, top)
+                        }
+                    }
                 }
             }
         }
