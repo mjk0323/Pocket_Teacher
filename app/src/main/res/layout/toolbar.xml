@@ -7,7 +7,6 @@
     android:elevation="4dp"
     android:padding="16dp">
 
-    <!-- 종료 버튼 (기본은 GONE) -->
     <ImageView
         android:id="@+id/btn_close"
         android:layout_width="24dp"
@@ -17,6 +16,7 @@
         android:src="@drawable/onoff"
         android:visibility="gone"
         android:contentDescription="닫기" />
+
 
     <!-- 제목 -->
     <TextView

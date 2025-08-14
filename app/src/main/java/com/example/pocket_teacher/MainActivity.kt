@@ -37,6 +37,13 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        // 설정 버튼 클릭 시 SettingsAcivity로 이동
+        val SettingsButton = findViewById<LinearLayout>(R.id.button_settings)
+        SettingsButton.setOnClickListener {
+            val intent = Intent(this, SettingsActivity::class.java)
+            startActivity(intent)
+        }
+
         // 닫기 버튼 처리
         val closeButton = findViewById<ImageView>(R.id.btn_close)
         closeButton.visibility = View.VISIBLE

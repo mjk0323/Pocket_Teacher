@@ -2,9 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- 권한 요청 -->
+    <!-- 권한 -->
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" /> <!-- 패키지 가시성 (Android 11 이상) -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
+    <!-- 패키지 가시성 (Android 11+) -->
     <queries>
         <package android:name="com.kakao.talk" />
         <package android:name="com.google.android.youtube" />
@@ -19,7 +21,35 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Pocket_Teacher">
-        <!-- 서비스 등록 -->
+
+        <!-- 설정 화면 -->
+        <activity
+            android:name=".SettingsActivity"
+            android:exported="false"
+            android:label="@string/title_activity_settings"
+            android:theme="@style/Theme.Pocket_Teacher" />
+
+        <!-- 문의 내역(Compose) -->
+        <activity
+            android:name=".InquiryHistoryActivity"
+            android:exported="false"
+            android:label="@string/title_activity_inquiry_history"
+            android:theme="@style/Theme.Pocket_Teacher" />
+
+        <!-- FAQ / 문의하기 / 앱 정보 -->
+        <activity
+            android:name=".FAQActivity"
+            android:exported="false"
+            android:label="@string/title_activity_faqactivity"
+            android:theme="@style/Theme.Pocket_Teacher" />
+        <activity
+            android:name=".InquiryActivity"
+            android:exported="false"
+            android:label="@string/title_activity_inquiry"
+            android:theme="@style/Theme.Pocket_Teacher" />
+ 
+
+        <!-- 서비스들 (프로젝트에 맞춰 유지) -->
         <service
             android:name=".KakaoOverlayService"
             android:enabled="true"
@@ -30,7 +60,7 @@
             android:exported="true" />
         <service
             android:name=".TrainOverlayService"
-            android:enabled="true"
+            android:enabled="false"
             android:exported="false"
             android:permission="android.permission.SYSTEM_ALERT_WINDOW" />
         <service
@@ -39,9 +69,9 @@
             android:exported="true" />
         <service
             android:name=".AppAccessibilityService"
-            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE"
             android:enabled="true"
-            android:exported="true">
+            android:exported="true"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
             <intent-filter>
                 <action android:name="android.accessibilityservice.AccessibilityService" />
             </intent-filter>
@@ -50,7 +80,7 @@
                 android:resource="@xml/accessibility_service_config" />
         </service>
 
-        <!-- 화면(Activity) 등록 -->
+        <!-- 기존 액티비티들 -->
         <activity
             android:name=".BaseballTicketActivity"
             android:exported="false" />
@@ -61,7 +91,6 @@
             android:theme="@style/Theme.Pocket_Teacher">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -84,5 +113,4 @@
             android:name=".MainActivity"
             android:exported="false" />
     </application>
-
 </manifest>

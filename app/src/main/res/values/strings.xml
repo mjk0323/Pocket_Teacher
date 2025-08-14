@@ -8,4 +8,8 @@
     <string name="title_activity_splash">SplashActivity</string>
     <string name="title_activity_train_overlay_service">TrainOverlayService</string>
     <string name="accessibility_service_description">AccessibilityService</string>
+    <string name="title_activity_inquiry">InquiryActivity</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+    <string name="title_activity_faqactivity">FAQActivity</string>
+    <string name="title_activity_inquiry_history">Inquiry_history_Activity</string>
 </resources>
