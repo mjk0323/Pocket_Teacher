@@ -6,6 +6,9 @@
     <color name="button_selected">#FFE595</color>        <!-- 클릭 시 노란색 -->
     <color name="button_border">#222222</color>          <!-- 버튼 테두리 -->
 
+    <color name="brand_yellow">#FFE79B</color>
+    <color name="brand_brown">#5B3A00</color>
+
     <color name="balloon_text">#FFFFFF</color>  <!-- 밝은 테마용 하얀색 글자 -->
     <color name="balloon_bg">#CC000000</color>     <!-- 배경: 반투명 검정 -->
 </resources>

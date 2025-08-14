@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/inquiry_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    tools:context=".InquiryActivity">
+
+    <!-- NestedScrollView는 자식 1개만 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- 공통 툴바 -->
+        <include layout="@layout/toolbar" />
+
+        <!-- 원래 카드 안쪽 내용을 감싸는 컨테이너 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp"
+            android:layout_margin="16dp"
+            android:background="@android:color/white">
+
+
+            <!-- 아이콘 + 안내문구 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="8dp">
+
+                <ImageView
+                    android:layout_width="72dp"
+                    android:layout_height="72dp"
+                    android:layout_marginEnd="16dp"
+                    android:contentDescription="@string/icon"
+                    android:src="@drawable/ic_pencil" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="‘손 안의 선생님’을 사용하시다가\n궁금한 점이나 불편한 점이\n있다면 말씀해주세요."
+                    android:textSize="16sp"
+                    android:lineSpacingExtra="2dp" />
+            </LinearLayout>
+
+            <!-- 제목 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="제목 (필수 등록)"
+                android:textStyle="bold"
+                android:layout_marginTop="16dp" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilSubject"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:boxStrokeColor="@color/brand_brown"
+                app:boxStrokeWidth="1dp"
+                app:boxCornerRadiusTopStart="8dp"
+                app:boxCornerRadiusTopEnd="8dp"
+                app:boxCornerRadiusBottomStart="8dp"
+                app:boxCornerRadiusBottomEnd="8dp"
+                android:layout_marginTop="8dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etSubject"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- 내용 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="내용 (필수 등록)"
+                android:textStyle="bold"
+                android:layout_marginTop="20dp" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilBody"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:boxStrokeColor="@color/brand_brown"
+                app:boxStrokeWidth="1dp"
+                app:boxCornerRadiusTopStart="8dp"
+                app:boxCornerRadiusTopEnd="8dp"
+                app:boxCornerRadiusBottomStart="8dp"
+                app:boxCornerRadiusBottomEnd="8dp"
+                android:layout_marginTop="8dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etBody"
+                    android:layout_width="match_parent"
+                    android:layout_height="220dp"
+                    android:gravity="top"
+                    android:inputType="textMultiLine"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- 파일 첨부 라벨 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="파일 첨부 (필요시)"
+                android:textStyle="bold"
+                android:layout_marginTop="20dp" />
+
+            <!-- 미리보기 -->
+            <ImageView
+                android:id="@+id/ivPreview"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"
+                android:scaleType="centerCrop"
+                android:adjustViewBounds="true"
+                android:visibility="gone" />
+
+            <!-- 사진 첨부 버튼 -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnAttach"
+                android:layout_width="200dp"
+                android:layout_height="56dp"
+                android:text="사진 첨부"
+                android:textAllCaps="false"
+                android:textColor="@color/brand_brown"
+                app:icon="@drawable/ic_image"
+                app:iconGravity="textStart"
+                app:iconPadding="12dp"
+                app:backgroundTint="@color/brand_yellow"
+                app:cornerRadius="12dp"
+                app:iconSize="20dp"
+                app:iconTint="@null"   />
+
+            <!-- 등록 버튼 -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSubmit"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:layout_marginTop="24dp"
+                android:text="등록"
+                android:textAllCaps="false"
+                android:textSize="16sp"
+                android:textColor="@color/brand_brown"
+                app:backgroundTint="@color/brand_yellow"
+                app:cornerRadius="12dp" />
+
+        </LinearLayout>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

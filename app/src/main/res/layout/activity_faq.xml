@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/faq_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- 공통 툴바: 부모 패딩 없이 화면 모서리에 붙게 -->
+        <include layout="@layout/toolbar" />
+
+        <!-- 툴바 아래 컨텐츠에만 16dp 패딩 적용 -->
+        <LinearLayout
+            android:id="@+id/content_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- 안내 아이콘 + 문구 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="24dp"
+                android:layout_marginHorizontal="18dp"
+                android:layout_marginBottom="60dp">
+
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_marginEnd="16dp"
+                    android:contentDescription="@string/icon"
+                    android:src="@drawable/ic_pencil" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="자주 묻는 질문과 그에 대한 \n답변을 모아둔 페이지입니다."
+                    android:textColor="#000000"
+                    android:textSize="17sp" />
+            </LinearLayout>
+
+            <!-- ====== ITEM 1 ====== -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="24dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Q1. 현재 안내 가능한 앱은 카카오톡, 유튜브만 되나요?"
+                    android:textStyle="bold"
+                    android:textSize="15sp"
+                    android:padding="12dp"
+                    android:background="#FFF3D6" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="A. 서비스 확장 예정입니다."
+                    android:textSize="14sp"
+                    android:paddingStart="12dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="12dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#E6E6E6" />
+            </LinearLayout>
+
+            <!-- ====== ITEM 2 ====== -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="24dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Q2. 오버레이가 안 떠요"
+                    android:textStyle="bold"
+                    android:textSize="15sp"
+                    android:padding="12dp"
+                    android:background="#FFF3D6" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="A. 접근성 권한을 켜주셔야 합니다."
+                    android:textSize="14sp"
+                    android:paddingStart="12dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="12dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#E6E6E6" />
+            </LinearLayout>
+
+            <!-- ====== ITEM 3 ====== -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="24dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Q3. 왜 앱 실행하면 오버레이가 안 뜨나요?"
+                    android:textStyle="bold"
+                    android:textSize="15sp"
+                    android:padding="12dp"
+                    android:background="#FFF3D6" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="A. 손 안의 선생님 앱을 통해 앱을 실행했는지 확인해주세요."
+                    android:textSize="14sp"
+                    android:paddingStart="12dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="12dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#E6E6E6" />
+            </LinearLayout>
+
+            <!-- ====== ITEM 4 ====== -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="24dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Q4. 소리가 안 들려요"
+                    android:textStyle="bold"
+                    android:textSize="15sp"
+                    android:padding="12dp"
+                    android:background="#FFF3D6" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="A. 볼륨키를 올렸는지 확인해주세요."
+                    android:textSize="14sp"
+                    android:paddingStart="12dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="12dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#E6E6E6" />
+            </LinearLayout>
+
+            <!-- ====== ITEM 5 ====== -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="24dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Q5. 앱을 공유하고 싶어요"
+                    android:textStyle="bold"
+                    android:textSize="15sp"
+                    android:padding="12dp"
+                    android:background="#FFF3D6" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="A. 링크 제공"
+                    android:textSize="14sp"
+                    android:paddingStart="12dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="12dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#E6E6E6" />
+            </LinearLayout>
+
+        </LinearLayout>
+        <!-- /content_container -->
+
+    </LinearLayout>
+</ScrollView>

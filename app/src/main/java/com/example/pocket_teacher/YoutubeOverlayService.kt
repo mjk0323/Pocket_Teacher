@@ -10,6 +10,9 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
 
@@ -56,7 +59,6 @@ class YoutubeOverlayService : Service() {
         }
 
         showOverlay(buttonInfoList)
-
         return START_STICKY
     }
 
@@ -76,12 +78,12 @@ class YoutubeOverlayService : Service() {
 
         // 윈도우 매니저 파라미터 설정 - 터치 이벤트 완전히 통과시키기
         val params = WindowManager.LayoutParams(
-            WindowManager.LayoutParams.MATCH_PARENT, // 전체 너비
-            WindowManager.LayoutParams.MATCH_PARENT, // 전체 높이
+            WindowManager.LayoutParams.MATCH_PARENT,
+            WindowManager.LayoutParams.MATCH_PARENT,
             WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
             WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
                     WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL or
-                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, // 터치 이벤트 완전히 통과
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
             PixelFormat.TRANSLUCENT
         )
 
@@ -89,16 +91,14 @@ class YoutubeOverlayService : Service() {
         params.x = 0
         params.y = 0
 
-        // 오버레이 추가
         windowManager.addView(overlayView, params)
 
-        // 버튼 정보에 따라 visibility 및 위치 업데이트
         updateOverlayVisibility(buttonInfoList)
     }
 
     private fun updateOverlayVisibility(buttonInfoList: List<String>) {
         overlayView?.let { view ->
-            // 먼저 모든 컨테이너를 GONE으로 설정
+            // 모두 GONE
             view.findViewById<View>(R.id.cast_container)?.visibility = View.GONE
             view.findViewById<View>(R.id.search_container)?.visibility = View.GONE
             view.findViewById<View>(R.id.notifications_container)?.visibility = View.GONE
@@ -114,7 +114,7 @@ class YoutubeOverlayService : Service() {
             view.findViewById<View>(R.id.subscriptions_container)?.visibility = View.GONE
             view.findViewById<View>(R.id.you_container)?.visibility = View.GONE
 
-            // 버튼 정보를 체크해서 해당하는 것들만 VISIBLE로 변경
+            // 필요한 것만 VISIBLE
             buttonInfoList.forEach { buttonInfo ->
                 val parts = buttonInfo.split("|")
                 val positions = parts[0].split(",")
@@ -123,111 +123,74 @@ class YoutubeOverlayService : Service() {
                 val right = positions[2].toInt()
                 val bottom = positions[3].toInt()
 
-                val description = parts[4].takeIf { it.isNotEmpty() } // 설명
+                val description = parts[4].takeIf { it.isNotEmpty() }
                 val combinedText = (description ?: "").lowercase()
 
                 when {
                     combinedText.contains("cast") ||
-                         (combinedText.contains("전송")&&combinedText.contains("버튼"))-> {
-                        val container = view.findViewById<View>(R.id.cast_container)
-                        container?.let {
-                            it.visibility = View.VISIBLE
-                            topContainerPosition(it, left, top)
-                        }
+                            (combinedText.contains("전송") && combinedText.contains("버튼")) -> {
+                        val c = view.findViewById<View>(R.id.cast_container)
+                        c?.let { it.visibility = View.VISIBLE; topContainerPosition(it, left, top) }
                     }
                     combinedText.contains("search") || combinedText.contains("검색") -> {
-                        val container = view.findViewById<View>(R.id.search_container)
-                        container?.let {
-                            it.visibility = View.VISIBLE
-                            topContainerPosition(it, left, top)
-                        }
+                        val c = view.findViewById<View>(R.id.search_container)
+                        c?.let { it.visibility = View.VISIBLE; topContainerPosition(it, left, top) }
                     }
-                    combinedText.contains("notifications") || combinedText.contains("알림")-> {
-                        val container = view.findViewById<View>(R.id.notifications_container)
-                        container?.let {
-                            it.visibility = View.VISIBLE
-                            topContainerPosition(it, left, top)
-                        }
+                    combinedText.contains("notifications") || combinedText.contains("알림") -> {
+                        val c = view.findViewById<View>(R.id.notifications_container)
+                        c?.let { it.visibility = View.VISIBLE; topContainerPosition(it, left, top) }
                     }
                     combinedText.contains("more") ||
-                        (combinedText.contains("옵션")&&combinedText.contains("더보기"))-> {
-                        val container = view.findViewById<View>(R.id.more_container)
-                        container?.let {
-                            it.visibility = View.VISIBLE
-                            topContainerPosition(it, left, top)
-                        }
+                            (combinedText.contains("옵션") && combinedText.contains("더보기")) -> {
+                        val c = view.findViewById<View>(R.id.more_container)
+                        c?.let { it.visibility = View.VISIBLE; topContainerPosition(it, left, top) }
                     }
-                    (combinedText.contains("like")&&combinedText.contains("this")
-                            && combinedText.contains("video")) 
-                            || (combinedText.contains("동영상을")&&combinedText.contains("좋아함")) -> {
-                        val container = view.findViewById<View>(R.id.like_container)
-                        container?.let {
-                            it.visibility = View.VISIBLE
-                            topContainerPosition(it, left, top)
-                        }
+                    (combinedText.contains("like") && combinedText.contains("this") && combinedText.contains("video")) ||
+                            (combinedText.contains("동영상을") && combinedText.contains("좋아함")) -> {
+                        val c = view.findViewById<View>(R.id.like_container)
+                        c?.let { it.visibility = View.VISIBLE; topContainerPosition(it, left, top) }
                     }
-                    (combinedText.contains("dislike")&&combinedText.contains("this")
-                            && combinedText.contains("video"))
-                            || (combinedText.contains("싫어요")&&combinedText.contains("표시"))    -> {
-                        val container = view.findViewById<View>(R.id.dislike_container)
-                        container?.let {
-                            it.visibility = View.VISIBLE
-                            topContainerPosition(it, left, top)
-                        }
+                    (combinedText.contains("dislike") && combinedText.contains("this") && combinedText.contains("video")) ||
+                            (combinedText.contains("싫어요") && combinedText.contains("표시")) -> {
+                        val c = view.findViewById<View>(R.id.dislike_container)
+                        c?.let { it.visibility = View.VISIBLE; topContainerPosition(it, left, top) }
                     }
-                    (combinedText.contains("view")&&combinedText.contains("comments"))
-                            || (combinedText.contains("댓글")&&combinedText.contains("보기"))-> {
-                        val container = view.findViewById<View>(R.id.comments_container)
-                        container?.let {
-                            it.visibility = View.VISIBLE
-                            topContainerPosition(it, left, top)
-                        }
+                    (combinedText.contains("view") && combinedText.contains("comments")) ||
+                            (combinedText.contains("댓글") && combinedText.contains("보기")) -> {
+                        val c = view.findViewById<View>(R.id.comments_container)
+                        c?.let { it.visibility = View.VISIBLE; topContainerPosition(it, left, top) }
                     }
-                    combinedText.contains("share")&&combinedText.contains("this")
-                            &&combinedText.contains("video")
-                            || (combinedText.contains("동영상")&&combinedText.contains("공유"))    -> {
-                        val container = view.findViewById<View>(R.id.share_container)
-                        container?.let {
-                            it.visibility = View.VISIBLE
-                            topContainerPosition(it, left, top)
-                        }
+                    (combinedText.contains("share") && combinedText.contains("this") && combinedText.contains("video")) ||
+                            (combinedText.contains("동영상") && combinedText.contains("공유")) -> {
+                        val c = view.findViewById<View>(R.id.share_container)
+                        c?.let { it.visibility = View.VISIBLE; topContainerPosition(it, left, top) }
                     }
+
                     // 하단
-                    combinedText.contains("home") || combinedText.contains("홈")-> {
-                        val container = view.findViewById<View>(R.id.home_container)
-                        container?.let {
-                            it.visibility = View.VISIBLE
-                            bottomContainerPosition(it, left, top)
-                        }
+                    combinedText.contains("home") || combinedText.contains("홈") -> {
+                        val c = view.findViewById<View>(R.id.home_container)
+                        c?.let { it.visibility = View.VISIBLE; bottomContainerPosition(it, left, top) }
                     }
                     combinedText.contains("shorts") -> {
-                        val container = view.findViewById<View>(R.id.shorts_container)
-                        container?.let {
-                            it.visibility = View.VISIBLE
-                            bottomContainerPosition(it, left, top)
-                        }
+                        val c = view.findViewById<View>(R.id.shorts_container)
+                        c?.let { it.visibility = View.VISIBLE; bottomContainerPosition(it, left, top) }
                     }
                     combinedText.contains("create") || combinedText.contains("만들기") -> {
-                        val container = view.findViewById<View>(R.id.create_container)
-                        container?.let {
-                            it.visibility = View.VISIBLE
-                            bottomContainerPosition(it, left, top)
-                        }
+                        val c = view.findViewById<View>(R.id.create_container)
+                        c?.let { it.visibility = View.VISIBLE; bottomContainerPosition(it, left, top) }
                     }
                     combinedText.contains("subscriptions") || combinedText.contains("구독") -> {
-                        val container = view.findViewById<View>(R.id.subscriptions_container)
-                        container?.let {
-                            it.visibility = View.VISIBLE
-                            bottomContainerPosition(it, left, top)
-                        }
+                        val c = view.findViewById<View>(R.id.subscriptions_container)
+                        c?.let { it.visibility = View.VISIBLE; bottomContainerPosition(it, left, top) }
                     }
-                    (combinedText.contains("you") && !combinedText.contains("tube"))
-                            || (combinedText.contains("내") && combinedText.contains("프로필"))-> {
-                        val container = view.findViewById<View>(R.id.you_container)
-                        container?.let {
-                            it.visibility = View.VISIBLE
-                            bottomContainerPosition(it, left, top)
-                        }
+                    (combinedText.contains("you") && !combinedText.contains("tube")) ||
+                            (combinedText.contains("내") && combinedText.contains("프로필")) ||
+                            combinedText.contains("내 페이지") ||
+                            combinedText.contains("내페이지") ||
+                            combinedText.contains("profile") ||
+                            combinedText.contains("me") -> {
+                        val c = view.findViewById<View>(R.id.you_container)
+                        c?.let { it.visibility = View.VISIBLE; bottomContainerPosition(it, left, top) }
                     }
                 }
             }
@@ -236,45 +199,133 @@ class YoutubeOverlayService : Service() {
 
     private fun topContainerPosition(container: View, x: Int, y: Int) {
         container.post {
-            // ConstraintLayout.LayoutParams로 캐스팅
-            val constraintParams = container.layoutParams as ConstraintLayout.LayoutParams
-
-            // 부모의 왼쪽 위 모서리를 기준점으로 설정
-            constraintParams.startToStart = ConstraintLayout.LayoutParams.PARENT_ID
-            constraintParams.topToTop = ConstraintLayout.LayoutParams.PARENT_ID
-
-            // 절대 좌표를 마진으로 설정
-            constraintParams.leftMargin = x-30
-            constraintParams.topMargin = y
-
-            // 다른 마진은 0으로 초기화
-            constraintParams.rightMargin = 0
-            constraintParams.bottomMargin = 0
-
-            container.layoutParams = constraintParams
+            val p = container.layoutParams as ConstraintLayout.LayoutParams
+            p.startToStart = ConstraintLayout.LayoutParams.PARENT_ID
+            p.topToTop = ConstraintLayout.LayoutParams.PARENT_ID
+            p.leftMargin = x - 30
+            p.topMargin = y
+            p.rightMargin = 0
+            p.bottomMargin = 0
+            container.layoutParams = p
             container.requestLayout()
+
+            // 버튼 아래에 말풍선 → 꼬리는 위
+            setBalloonTail(container, tailOnTop = true)
         }
     }
 
     private fun bottomContainerPosition(container: View, x: Int, y: Int) {
         container.post {
-            // ConstraintLayout.LayoutParams로 캐스팅
-            val constraintParams = container.layoutParams as ConstraintLayout.LayoutParams
+            val params = container.layoutParams as ConstraintLayout.LayoutParams
+            val parent = container.parent as View
 
-            // 부모의 왼쪽 위 모서리를 기준점으로 설정
-            constraintParams.startToStart = ConstraintLayout.LayoutParams.PARENT_ID
-            constraintParams.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
+            if (parent.width == 0 || parent.height == 0 ||
+                container.measuredWidth == 0 || container.measuredHeight == 0) {
+                container.post { bottomContainerPosition(container, x, y) }
+                return@post
+            }
 
-            // 절대 좌표를 마진으로 설정
-            constraintParams.leftMargin = x
-            constraintParams.topMargin = 0
+            val pw = parent.width
+            val ph = parent.height
+            val w = container.measuredWidth
+            val h = container.measuredHeight
 
-            // 다른 마진은 0으로 초기화
-            constraintParams.rightMargin = 0
-            constraintParams.bottomMargin = -y
+            val gap = (6 * resources.displayMetrics.density).toInt()
+            val pad = (6 * resources.displayMetrics.density).toInt()
 
-            container.layoutParams = constraintParams
+            val left = x.coerceIn(pad, (pw - w - pad).coerceAtLeast(pad))
+            var top = y - h - gap
+            top = top.coerceIn(pad, ph - h - pad)
+            val bottomMargin = ph - (top + h)
+
+            params.startToStart = ConstraintLayout.LayoutParams.PARENT_ID
+            params.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
+            params.topToTop = ConstraintLayout.LayoutParams.UNSET
+            params.endToEnd = ConstraintLayout.LayoutParams.UNSET
+            params.leftMargin = left
+            params.topMargin = 0
+            params.rightMargin = 0
+            params.bottomMargin = bottomMargin
+
+            container.layoutParams = params
             container.requestLayout()
+
+            // 버튼 위에 말풍선 → 꼬리는 아래
+            setBalloonTail(container, tailOnTop = false)
+        }
+    }
+
+    // ----------------- 꼬리 제어(안전 롤백 + 핀셋 보정) -----------------
+
+    private fun dp(v: Int): Int = (v * resources.displayMetrics.density).toInt()
+
+    /** 중앙 보정을 적용할 컨테이너 화이트리스트 (기본: 비어 있음 → 아무 것도 건드리지 않음) */
+    private val tailCenterIds: Set<Int> = emptySet()
+    // 예) 검색만 중앙 맞춤하고 싶으면:
+    // private val tailCenterIds: Set<Int> = setOf(R.id.search_container)
+
+    /** 컨테이너별 꼬리 X 미세 보정(dp). 중앙 보정이 켜진 컨테이너에만 적용됨. */
+    private val tailFineOffsetDp: Map<Int, Int> = emptyMap()
+    // 예) 검색만 -2dp:
+    // private val tailFineOffsetDp: Map<Int, Int> = mapOf(R.id.search_container to -2)
+
+    /**
+     * 말풍선 꼬리를 위/아래로 이동하고 방향만 바꾼다(기본).
+     * 가로 위치는 그대로 두되, tailCenterIds에 포함된 경우에만 버블 폭 기준 중앙 정렬 + 미세 보정 적용.
+     */
+    private fun setBalloonTail(container: View, tailOnTop: Boolean) {
+        val ll = container as? LinearLayout ?: return
+
+        var tail: ImageView? = null
+        var bubble: TextView? = null
+        for (i in 0 until ll.childCount) {
+            when (val child = ll.getChildAt(i)) {
+                is ImageView -> if (tail == null) tail = child
+                is TextView -> if (bubble == null) bubble = child
+            }
+        }
+        val tailView = tail ?: return
+        val bubbleView = bubble ?: return
+
+        // 1) 위/아래 재배치 + 방향만 변경 (가로 위치 유지)
+        if (tailOnTop) {
+            if (ll.indexOfChild(tailView) != 0) {
+                ll.removeView(tailView); ll.addView(tailView, 0)
+            }
+            if (ll.indexOfChild(bubbleView) != 1) {
+                ll.removeView(bubbleView); ll.addView(bubbleView, 1)
+            }
+            tailView.rotation = 180f
+        } else {
+            if (ll.indexOfChild(bubbleView) != 0) {
+                ll.removeView(bubbleView); ll.addView(bubbleView, 0)
+            }
+            if (ll.indexOfChild(tailView) != ll.childCount - 1) {
+                ll.removeView(tailView); ll.addView(tailView)
+            }
+            tailView.rotation = 0f
+        }
+
+        // 2) 선택적으로만 중앙 보정
+        if (!tailCenterIds.contains(container.id)) return
+
+        ll.post {
+            if (bubbleView.measuredWidth == 0 || tailView.measuredWidth == 0) {
+                ll.post { setBalloonTail(container, tailOnTop) }
+                return@post
+            }
+            val lp = (tailView.layoutParams as? LinearLayout.LayoutParams)
+                ?: LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                )
+
+            val centerMargin = ((bubbleView.measuredWidth - tailView.measuredWidth) / 2f).toInt()
+            val fine = tailFineOffsetDp[container.id] ?: 0
+            lp.marginStart = centerMargin + dp(fine)
+            lp.gravity = Gravity.CENTER_HORIZONTAL
+            tailView.layoutParams = lp
+            tailView.requestLayout()
         }
     }
 
@@ -285,3 +336,7 @@ class YoutubeOverlayService : Service() {
         }
     }
 }
+
+/** 문자열에 키워드들 중 하나라도 포함되는지 */
+private fun String.hasAny(vararg keys: String): Boolean =
+    keys.any { this.contains(it) }
