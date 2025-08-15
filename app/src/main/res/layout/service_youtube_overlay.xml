@@ -7,7 +7,6 @@
     android:background="@android:color/transparent"
     android:padding="8dp">
 
-    <!-- 아래 말풍선은 피그마에 있는 화면 참고해서 만듦 -->
     <!-- 외부 cast -->
     <LinearLayout
         android:id="@+id/cast_container"
@@ -27,7 +26,9 @@
             android:textSize="14sp"
             android:textColor="@color/balloon_text"
             android:background="@drawable/bg_overlay"
-            android:padding="10dp" />
+            android:padding="10dp"
+            android:gravity="center"
+            android:textAlignment="center" />
 
         <ImageView
             android:layout_width="16dp"
@@ -55,7 +56,9 @@
             android:textSize="14sp"
             android:textColor="@color/balloon_text"
             android:background="@drawable/bg_overlay"
-            android:padding="10dp" />
+            android:padding="10dp"
+            android:gravity="center"
+            android:textAlignment="center" />
 
         <ImageView
             android:layout_width="16dp"
@@ -83,7 +86,9 @@
             android:textSize="14sp"
             android:textColor="@color/balloon_text"
             android:background="@drawable/bg_overlay"
-            android:padding="10dp" />
+            android:padding="10dp"
+            android:gravity="center"
+            android:textAlignment="center" />
 
         <ImageView
             android:layout_width="16dp"
@@ -111,7 +116,9 @@
             android:textSize="14sp"
             android:textColor="@color/balloon_text"
             android:background="@drawable/bg_overlay"
-            android:padding="10dp" />
+            android:padding="10dp"
+            android:gravity="center"
+            android:textAlignment="center" />
 
         <ImageView
             android:layout_width="16dp"
@@ -139,7 +146,9 @@
             android:textSize="14sp"
             android:textColor="@color/balloon_text"
             android:background="@drawable/bg_overlay"
-            android:padding="10dp" />
+            android:padding="10dp"
+            android:gravity="center"
+            android:textAlignment="center" />
 
         <ImageView
             android:layout_width="16dp"
@@ -167,7 +176,9 @@
             android:textSize="14sp"
             android:textColor="@color/balloon_text"
             android:background="@drawable/bg_overlay"
-            android:padding="10dp" />
+            android:padding="10dp"
+            android:gravity="center"
+            android:textAlignment="center" />
 
         <ImageView
             android:layout_width="16dp"
@@ -195,7 +206,9 @@
             android:textSize="14sp"
             android:textColor="@color/balloon_text"
             android:background="@drawable/bg_overlay"
-            android:padding="10dp" />
+            android:padding="10dp"
+            android:gravity="center"
+            android:textAlignment="center" />
 
         <ImageView
             android:layout_width="16dp"
@@ -223,7 +236,9 @@
             android:textSize="14sp"
             android:textColor="@color/balloon_text"
             android:background="@drawable/bg_overlay"
-            android:padding="10dp" />
+            android:padding="10dp"
+            android:gravity="center"
+            android:textAlignment="center" />
 
         <ImageView
             android:layout_width="16dp"
@@ -253,7 +268,9 @@
             android:textSize="14sp"
             android:textColor="@color/balloon_text"
             android:background="@drawable/bg_overlay"
-            android:padding="10dp" />
+            android:padding="10dp"
+            android:gravity="center"
+            android:textAlignment="center" />
 
         <ImageView
             android:layout_width="16dp"
@@ -283,7 +300,9 @@
             android:textSize="14sp"
             android:textColor="@color/balloon_text"
             android:background="@drawable/bg_overlay"
-            android:padding="10dp" />
+            android:padding="10dp"
+            android:gravity="center"
+            android:textAlignment="center" />
 
         <ImageView
             android:layout_width="16dp"
@@ -312,7 +331,9 @@
             android:textSize="14sp"
             android:textColor="@color/balloon_text"
             android:background="@drawable/bg_overlay"
-            android:padding="10dp" />
+            android:padding="10dp"
+            android:gravity="center"
+            android:textAlignment="center" />
 
         <ImageView
             android:layout_width="16dp"
@@ -341,7 +362,9 @@
             android:textSize="14sp"
             android:textColor="@color/balloon_text"
             android:background="@drawable/bg_overlay"
-            android:padding="10dp" />
+            android:padding="10dp"
+            android:gravity="center"
+            android:textAlignment="center" />
 
         <ImageView
             android:layout_width="16dp"
@@ -371,7 +394,9 @@
             android:textSize="14sp"
             android:textColor="@color/balloon_text"
             android:background="@drawable/bg_overlay"
-            android:padding="10dp" />
+            android:padding="10dp"
+            android:gravity="center"
+            android:textAlignment="center" />
 
         <ImageView
             android:layout_width="16dp"
@@ -400,7 +425,9 @@
             android:textSize="14sp"
             android:textColor="@color/balloon_text"
             android:background="@drawable/bg_overlay"
-            android:padding="10dp" />
+            android:padding="10dp"
+            android:gravity="center"
+            android:textAlignment="center" />
 
         <ImageView
             android:layout_width="16dp"

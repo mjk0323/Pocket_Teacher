@@ -6,9 +6,6 @@
     android:background="@android:color/transparent"
     android:padding="8dp">
 
-    <!-- 다음 4개는 버튼 비회원으로 예매 버튼으로 들어간 뒤에 있음
-    (마지막 하나는 예매내역 확인 버튼을 클릭한 후에 있음)  -->
-
     <!-- 출발역 말풍선 -->
     <LinearLayout
         android:id="@+id/departure_container"
@@ -29,7 +26,9 @@
             android:textSize="14sp"
             android:textColor="@color/balloon_text"
             android:background="@drawable/bg_overlay"
-            android:padding="10dp" />
+            android:padding="10dp"
+            android:gravity="center"
+            android:textAlignment="center" />
 
         <ImageView
             android:layout_width="16dp"
@@ -55,11 +54,13 @@
             android:id="@+id/change_location_overlay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="출발역과\n도착역\n전환"
+            android:text="출발역과\n도착역 전환"
             android:textSize="14sp"
             android:textColor="@color/balloon_text"
             android:background="@drawable/bg_overlay"
-            android:padding="10dp" />
+            android:padding="10dp"
+            android:gravity="center"
+            android:textAlignment="center" />
 
         <ImageView
             android:layout_width="16dp"
@@ -89,7 +90,9 @@
             android:textSize="14sp"
             android:textColor="@color/balloon_text"
             android:background="@drawable/bg_overlay"
-            android:padding="10dp" />
+            android:padding="10dp"
+            android:gravity="center"
+            android:textAlignment="center" />
 
         <ImageView
             android:layout_width="16dp"
@@ -115,11 +118,13 @@
             android:id="@+id/travel_type_overlay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="왕복/편도\n선택"
+            android:text="왕복/편도 선택"
             android:textSize="14sp"
             android:textColor="@color/balloon_text"
             android:background="@drawable/bg_overlay"
-            android:padding="10dp" />
+            android:padding="10dp"
+            android:gravity="center"
+            android:textAlignment="center" />
 
         <ImageView
             android:layout_width="16dp"
@@ -149,7 +154,9 @@
             android:textSize="14sp"
             android:textColor="@color/balloon_text"
             android:background="@drawable/bg_overlay"
-            android:padding="10dp" />
+            android:padding="10dp"
+            android:gravity="center"
+            android:textAlignment="center" />
 
         <ImageView
             android:layout_width="16dp"
@@ -178,7 +185,9 @@
             android:textSize="14sp"
             android:textColor="@color/balloon_text"
             android:background="@drawable/bg_overlay"
-            android:padding="10dp" />
+            android:padding="10dp"
+            android:gravity="center"
+            android:textAlignment="center" />
 
         <ImageView
             android:layout_width="16dp"
@@ -204,11 +213,13 @@
             android:id="@+id/etc_overlay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="다른 메뉴\n보기"
+            android:text="다른 메뉴 보기"
             android:textSize="14sp"
             android:textColor="@color/balloon_text"
             android:background="@drawable/bg_overlay"
-            android:padding="10dp" />
+            android:padding="10dp"
+            android:gravity="center"
+            android:textAlignment="center" />
 
         <ImageView
             android:layout_width="16dp"
@@ -238,7 +249,9 @@
             android:textSize="14sp"
             android:textColor="@color/balloon_text"
             android:background="@drawable/bg_overlay"
-            android:padding="10dp" />
+            android:padding="10dp"
+            android:gravity="center"
+            android:textAlignment="center" />
 
         <ImageView
             android:layout_width="16dp"
@@ -247,7 +260,7 @@
             android:layout_gravity="center" />
     </LinearLayout>
 
-    <!-- SNS 로그인 (카카오톡) 말풍선 (이건 예매내역 확인 로그인창 아래에 위치해 있음) -->
+    <!-- SNS 로그인 (카카오톡) 말풍선 -->
     <LinearLayout
         android:id="@+id/kakao_login_container"
         android:layout_width="wrap_content"
@@ -267,7 +280,9 @@
             android:textSize="14sp"
             android:textColor="@color/balloon_text"
             android:background="@drawable/bg_overlay"
-            android:padding="10dp" />
+            android:padding="10dp"
+            android:gravity="center"
+            android:textAlignment="center" />
 
         <ImageView
             android:layout_width="16dp"
