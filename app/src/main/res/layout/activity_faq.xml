@@ -43,7 +43,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="자주 묻는 질문과 그에 대한 \n답변을 모아둔 페이지입니다."
-                    android:textColor="#000000"
+                    android:textColor="#FF000000"
                     android:textSize="17sp" />
             </LinearLayout>
 
@@ -61,7 +61,8 @@
                     android:textStyle="bold"
                     android:textSize="15sp"
                     android:padding="12dp"
-                    android:background="#FFF3D6" />
+                    android:background="#FFF3D6"
+                    android:textColor="#FF000000" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -70,7 +71,8 @@
                     android:textSize="14sp"
                     android:paddingStart="12dp"
                     android:layout_marginTop="10dp"
-                    android:layout_marginBottom="12dp" />
+                    android:layout_marginBottom="12dp"
+                    android:textColor="#FF000000" />
 
                 <View
                     android:layout_width="match_parent"
@@ -92,7 +94,8 @@
                     android:textStyle="bold"
                     android:textSize="15sp"
                     android:padding="12dp"
-                    android:background="#FFF3D6" />
+                    android:background="#FFF3D6"
+                    android:textColor="#FF000000" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -101,7 +104,8 @@
                     android:textSize="14sp"
                     android:paddingStart="12dp"
                     android:layout_marginTop="10dp"
-                    android:layout_marginBottom="12dp" />
+                    android:layout_marginBottom="12dp"
+                    android:textColor="#FF000000" />
 
                 <View
                     android:layout_width="match_parent"
@@ -123,7 +127,8 @@
                     android:textStyle="bold"
                     android:textSize="15sp"
                     android:padding="12dp"
-                    android:background="#FFF3D6" />
+                    android:background="#FFF3D6"
+                    android:textColor="#FF000000" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -132,7 +137,8 @@
                     android:textSize="14sp"
                     android:paddingStart="12dp"
                     android:layout_marginTop="10dp"
-                    android:layout_marginBottom="12dp" />
+                    android:layout_marginBottom="12dp"
+                    android:textColor="#FF000000" />
 
                 <View
                     android:layout_width="match_parent"
@@ -154,7 +160,8 @@
                     android:textStyle="bold"
                     android:textSize="15sp"
                     android:padding="12dp"
-                    android:background="#FFF3D6" />
+                    android:background="#FFF3D6"
+                    android:textColor="#FF000000" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -163,7 +170,8 @@
                     android:textSize="14sp"
                     android:paddingStart="12dp"
                     android:layout_marginTop="10dp"
-                    android:layout_marginBottom="12dp" />
+                    android:layout_marginBottom="12dp"
+                    android:textColor="#FF000000" />
 
                 <View
                     android:layout_width="match_parent"
@@ -185,7 +193,8 @@
                     android:textStyle="bold"
                     android:textSize="15sp"
                     android:padding="12dp"
-                    android:background="#FFF3D6" />
+                    android:background="#FFF3D6"
+                    android:textColor="#FF000000" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -194,7 +203,8 @@
                     android:textSize="14sp"
                     android:paddingStart="12dp"
                     android:layout_marginTop="10dp"
-                    android:layout_marginBottom="12dp" />
+                    android:layout_marginBottom="12dp"
+                    android:textColor="#FF000000" />
 
                 <View
                     android:layout_width="match_parent"

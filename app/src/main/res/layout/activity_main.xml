@@ -169,5 +169,10 @@
                 android:layout_marginTop="30dp" />
         </LinearLayout>
 
+        <!-- ✅ 하단 여백용 뷰 -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="30dp" />
+
     </LinearLayout>
 </ScrollView>

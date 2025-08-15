@@ -26,7 +26,6 @@
             android:layout_margin="16dp"
             android:background="@android:color/white">
 
-
             <!-- 아이콘 + 안내문구 -->
             <LinearLayout
                 android:layout_width="match_parent"
@@ -49,7 +48,8 @@
                     android:layout_weight="1"
                     android:text="‘손 안의 선생님’을 사용하시다가\n궁금한 점이나 불편한 점이\n있다면 말씀해주세요."
                     android:textSize="16sp"
-                    android:lineSpacingExtra="2dp" />
+                    android:lineSpacingExtra="2dp"
+                    android:textColor="#FF000000" />
             </LinearLayout>
 
             <!-- 제목 -->
@@ -58,7 +58,8 @@
                 android:layout_height="wrap_content"
                 android:text="제목 (필수 등록)"
                 android:textStyle="bold"
-                android:layout_marginTop="16dp" />
+                android:layout_marginTop="16dp"
+                android:textColor="#FF000000" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilSubject"
@@ -85,7 +86,8 @@
                 android:layout_height="wrap_content"
                 android:text="내용 (필수 등록)"
                 android:textStyle="bold"
-                android:layout_marginTop="20dp" />
+                android:layout_marginTop="20dp"
+                android:textColor="#FF000000" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilBody"
@@ -116,7 +118,8 @@
                 android:layout_height="wrap_content"
                 android:text="파일 첨부 (필요시)"
                 android:textStyle="bold"
-                android:layout_marginTop="20dp" />
+                android:layout_marginTop="20dp"
+                android:textColor="#FF000000" />
 
             <!-- 미리보기 -->
             <ImageView
@@ -143,7 +146,7 @@
                 app:backgroundTint="@color/brand_yellow"
                 app:cornerRadius="12dp"
                 app:iconSize="20dp"
-                app:iconTint="@null"   />
+                app:iconTint="@null" />
 
             <!-- 등록 버튼 -->
             <com.google.android.material.button.MaterialButton

@@ -3,6 +3,7 @@ package com.example.pocket_teacher
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -13,12 +14,10 @@ class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_settings) // ← 실제 XML이 맞는지 확인!
+        setContentView(R.layout.activity_settings) // XML 파일명 확인 필수
 
-        // settings_root가 없으면 바로 알리고 리턴 (크래시 방지)
         val root: View? = findViewById(R.id.settings_root)
         if (root == null) {
-            // 필요하면 Log.e(...)로 찍어도 됨
             return
         }
 
@@ -27,6 +26,11 @@ class SettingsActivity : AppCompatActivity() {
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
+        }
+
+        // 🔹 뒤로가기 버튼 기능 추가
+        findViewById<ImageView>(R.id.btnBack)?.setOnClickListener {
+            finish() // 현재 액티비티 종료 → 이전 화면으로 복귀
         }
 
         // 자주 묻는 질문

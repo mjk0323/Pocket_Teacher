@@ -178,7 +178,6 @@
                         android:src="@drawable/ic_dot3"
                         android:contentDescription="답변 대기 중"/>
 
-
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
