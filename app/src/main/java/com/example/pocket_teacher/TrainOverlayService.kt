@@ -10,20 +10,15 @@ import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.MeasureSpec
 import android.view.WindowManager
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
 
-// ===== 간격/보정 상수 =====
-private const val GAP_DP_BASE = 20f     // 기본 버튼-말풍선 간격(유지)
-private const val EXTRA_STEP_DP = 8f    // 겹칠 때마다 추가로 늘릴 간격(계단식)
-private const val EXTRA_MAX_STEPS = 4   // 최대 재시도 단계 수
-private const val SAFE_TOP_DP = 8f      // 화면 최상단 안전 여백
-private const val ARROW_FALLBACK_DP = 8f// 꼬리(삼각형) 높이 기본값(리소스 미측정 시)
+// 공통 배치 파라미터
+private val GAP_DP = 12f          // 타겟-말풍선 최소 간격
+private val SAFE_TOP_DP = 8f      // 상태바 등 최상단 안전 여백
+
+private enum class Placement { TOP, BOTTOM, LEFT, RIGHT }
 
 class TrainOverlayService : Service() {
 
@@ -33,9 +28,44 @@ class TrainOverlayService : Service() {
     private var overlayView: View? = null
     private var isOverlayAdded = false
 
-    // 웹 주소창/툴바 움직임 등에 대한 공통 오프셋
+    // 웹뷰/툴바 보정
     private var offsetX = 0
     private var offsetY = 0
+
+    /** 말풍선 배치 프로필 */
+    private data class BubbleProfile(
+        val order: List<Placement>,
+        val dxDp: Float = 0f,
+        val dyDp: Float = 0f,
+        val snapRightEdge: Boolean = false // true면 화면 오른쪽 끝에 스냅(옵션 말풍선 전용)
+    )
+
+    // ▶ 프로필: 인접/SR은 오른쪽 끝 스냅 + 위로 확 올림, 열차조회는 사이드(우→좌) 우선
+    private val bubbleProfiles: Map<Int, BubbleProfile> by lazy {
+        mapOf(
+            R.id.nearby_option_container to BubbleProfile(
+                // 꼬리 제거라 방향은 의미 없음. 스냅+nudging만 사용
+                order = listOf(Placement.TOP, Placement.BOTTOM, Placement.LEFT, Placement.RIGHT),
+                dxDp = 0f, dyDp = -65f,  // ← 더 위로
+                snapRightEdge = true
+            ),
+            R.id.sr_option_container to BubbleProfile(
+                order = listOf(Placement.TOP, Placement.BOTTOM, Placement.LEFT, Placement.RIGHT),
+                dxDp = 0f, dyDp = -65f,
+                snapRightEdge = true
+            ),
+            R.id.etc_container to BubbleProfile(
+                order = listOf(Placement.TOP, Placement.BOTTOM, Placement.LEFT, Placement.RIGHT),
+                dxDp = -22f, dyDp = 0f
+            ),
+            // “6. 열차조회 클릭” : 버튼 오른쪽 → 왼쪽 → 위 → 아래 우선, 살짝 수평 여유
+            R.id.train_search_container to BubbleProfile(
+                order = listOf(Placement.RIGHT, Placement.LEFT, Placement.TOP, Placement.BOTTOM),
+                dxDp = -120f, dyDp = -4f,   // 살짝 위로 맞춤
+                snapRightEdge = false
+            )
+        )
+    }
 
     override fun onBind(intent: Intent?): IBinder? = null
 
@@ -47,33 +77,25 @@ class TrainOverlayService : Service() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        Log.d(TAG, "onStartCommand flags=$flags startId=$startId intent=$intent")
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             Log.d(TAG, "Settings.canDrawOverlays=${Settings.canDrawOverlays(this)}")
         }
 
-        // 공통 오프셋(없으면 0)
         offsetX = intent?.getIntExtra("overlay_offset_x", 0) ?: 0
         offsetY = intent?.getIntExtra("overlay_offset_y", 0) ?: 0
-        Log.d(TAG, "overlay offset => x=$offsetX, y=$offsetY")
 
-        val targetPackage = intent?.getStringExtra("target_package")
         val buttonInfoList = intent?.getStringArrayListExtra("button_info_list")
-        Log.d(TAG, "target_package=$targetPackage, button_info_list size=${buttonInfoList?.size}")
-
         if (buttonInfoList == null) {
             Log.w(TAG, "buttonInfoList=null → 표시 건너뜀")
             return START_STICKY
         }
-
         showOverlay(buttonInfoList)
         return START_STICKY
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun showOverlay(buttonInfoList: List<String>) {
-        // 기존 오버레이 제거
+        // 기존 제거
         if (overlayView != null && isOverlayAdded) {
             runCatching {
                 windowManager.removeView(overlayView)
@@ -81,14 +103,12 @@ class TrainOverlayService : Service() {
             }.onFailure { Log.e(TAG, "기존 overlayView 제거 실패", it) }
         }
 
-        // inflate
         overlayView = runCatching {
             LayoutInflater.from(this).inflate(R.layout.service_train_ticket_overlay, null)
         }.onFailure {
             Log.e(TAG, "overlayView inflate 실패", it)
         }.getOrNull() ?: return
 
-        // 전체 화면, 터치 통과
         val params = WindowManager.LayoutParams(
             WindowManager.LayoutParams.MATCH_PARENT,
             WindowManager.LayoutParams.MATCH_PARENT,
@@ -99,28 +119,26 @@ class TrainOverlayService : Service() {
             PixelFormat.TRANSLUCENT
         ).apply {
             gravity = Gravity.TOP or Gravity.START
-            x = 0
-            y = 0
+            x = 0; y = 0
         }
 
         runCatching {
             windowManager.addView(overlayView, params)
             isOverlayAdded = true
-            Log.d(TAG, "overlay addView 성공")
         }.onFailure {
-            Log.e(TAG, "overlay addView 실패", it)
-            return
+            Log.e(TAG, "overlay addView 실패", it); return
         }
 
-        // 내용 반영
         runCatching { updateOverlayVisibility(buttonInfoList) }
             .onFailure { Log.e(TAG, "updateOverlayVisibility 예외", it) }
     }
 
+    private data class Node(val l:Int, val t:Int, val r:Int, val b:Int, val key:String)
+
     private fun updateOverlayVisibility(buttonInfoList: List<String>) {
         val root = overlayView ?: return
 
-        // 전부 GONE
+        // 전부 숨김
         val allIds = intArrayOf(
             R.id.departure_container,
             R.id.change_location_container,
@@ -130,143 +148,150 @@ class TrainOverlayService : Service() {
             R.id.passenger_count_container,
             R.id.etc_container,
             R.id.kakao_login_container,
+            R.id.nearby_option_container,
+            R.id.sr_option_container,
+            R.id.train_search_container,
             R.id.highlight_box
         )
         allIds.forEach { id -> root.findViewById<View>(id)?.visibility = View.GONE }
 
-        var matched = 0
-
-        buttonInfoList.forEachIndexed { idx, raw ->
+        // 파싱
+        val nodes = mutableListOf<Node>()
+        buttonInfoList.forEachIndexed { i, raw ->
             try {
                 val parts = raw.split("|")
                 val pos = parts[0].split(",")
-                val l = pos[0].toInt()
-                val t = pos[1].toInt()
-                val r = pos[2].toInt()
-                val b = pos[3].toInt()
-
-                val text = parts.getOrNull(3)?.takeIf { it.isNotEmpty() }
-                val desc = parts.getOrNull(4)?.takeIf { it.isNotEmpty() }
-                val key = (text ?: desc ?: "").lowercase()
-
-                fun showAt(id: Int, tag: String) {
-                    val v = root.findViewById<View>(id) ?: return
-                    v.visibility = View.VISIBLE
-                    placeBubble(v, l, t, r, b) // 자동 방향 + 버튼 가릴 때만 계단식 간격 증가
-                    matched++
-                    Log.d(TAG, "[$idx] $tag 매칭: rect=($l,$t,$r,$b) text=$text desc=$desc")
-                }
-
-                when {
-                    key.contains("출발역") -> showAt(R.id.departure_container, "출발역")
-                    key.contains("출발지/도착지") -> showAt(R.id.change_location_container, "출발지/도착지")
-                    key.contains("도착역") -> showAt(R.id.arrival_container, "도착역")
-                    key.contains("왕복") || key.contains("편도") -> showAt(R.id.travel_type_container, "여행종류")
-                    key.contains("출발일") -> showAt(R.id.date_select_container, "출발일")
-                    key.contains("총") && key.contains("명") -> showAt(R.id.passenger_count_container, "인원수")
-                    key.contains("확대") && key.contains("펼치기") -> showAt(R.id.etc_container, "기타")
-                    key.contains("카카오") && key.contains("로그인") -> showAt(R.id.kakao_login_container, "카카오로그인")
-                    else -> Log.d(TAG, "[$idx] 매칭 실패: '$key' @ ($l,$t,$r,$b)")
-                }
-            } catch (t: Throwable) {
-                Log.e(TAG, "[$idx] 파싱 실패 raw=$raw", t)
+                val l = pos[0].trim().toInt()
+                val t = pos[1].trim().toInt()
+                val r = pos[2].trim().toInt()
+                val b = pos[3].trim().toInt()
+                val key = parts.joinToString("|") { it.trim() }.lowercase()
+                nodes += Node(l,t,r,b,key)
+            } catch (e: Throwable) {
+                Log.e(TAG, "[node][$i] parse fail raw=$raw", e)
             }
         }
 
-        if (matched == 0) Log.w(TAG, "매칭된 말풍선이 없음")
-    }
+        // 공통 표시(프로필 적용)
+        fun showAt(id: Int, tag: String, n: Node) {
+            val v = root.findViewById<View>(id) ?: return
+            v.visibility = View.VISIBLE
+            placeBubbleWithProfile(id, v, n.l, n.t, n.r, n.b)
+            Log.d(TAG, "[show] $tag @(${n.l},${n.t},${n.r},${n.b})")
+        }
 
-    // ===== 꼬리 방향 열거형 =====
-    private enum class TailDir { UP, DOWN, LEFT, RIGHT }
+        // 주요 가이드 (출발역과 도착역 전환/ 왕복/편도 선택은 주석처리)
+        nodes.forEach { n ->
+            when {
+                n.key.contains("출발역") -> showAt(R.id.departure_container, "출발역", n)
 
-    // ===== 말풍선 꼬리 전환(위/아래/좌/우) =====
-    private fun setBalloonTail(container: View, dir: TailDir) {
-        val ll = container as? LinearLayout ?: return
+                //  출발↔도착 전환
+//                 n.key.contains("출발지/도착지") || n.key.contains("전환") || n.key.contains("바꾸기") ->
+//                     showAt(R.id.change_location_container, "출발↔도착 전환", n)
 
-        var tail: ImageView? = null
-        var bubble: TextView? = null
-        for (i in 0 until ll.childCount) {
-            when (val child = ll.getChildAt(i)) {
-                is ImageView -> if (tail == null) tail = child
-                is TextView  -> if (bubble == null) bubble = child
+                n.key.contains("도착역") -> showAt(R.id.arrival_container, "도착역", n)
+
+                // 왕복/편도 선택
+//                 (n.key.contains("왕복") || n.key.contains("편도")) ->
+//                     showAt(R.id.travel_type_container, "왕복/편도 선택", n)
+
+                n.key.contains("출발일") -> showAt(R.id.date_select_container, "출발일", n)
+
+                (n.key.contains("총") && n.key.contains("명")) ->
+                    showAt(R.id.passenger_count_container, "인원수", n)
+
+                (n.key.contains("검색") && n.key.contains("옵션")) ||
+                        (n.key.contains("확대") && n.key.contains("펼치기")) ->
+                    showAt(R.id.etc_container, "검색 옵션", n)
+
+                n.key.contains("카카오") && n.key.contains("로그인") ->
+                    showAt(R.id.kakao_login_container, "카카오로그인", n)
             }
         }
-        val tailView = tail ?: return
-        val bubbleView = bubble ?: return
 
-        fun placeFirst(v: View) { ll.removeView(v); ll.addView(v, 0) }
-        fun placeLast(v: View)  { ll.removeView(v); ll.addView(v) }
 
-        when (dir) {
-            TailDir.UP -> {
-                ll.orientation = LinearLayout.VERTICAL
-                // 아래쪽으로 꼬리: [꼬리, 버블] + 180°
-                if (ll.indexOfChild(tailView) != 0) placeFirst(tailView)
-                if (ll.indexOfChild(bubbleView) != 1) { ll.removeView(bubbleView); ll.addView(bubbleView, 1) }
-                tailView.rotation = 180f
-            }
-            TailDir.DOWN -> {
-                ll.orientation = LinearLayout.VERTICAL
-                // 위쪽으로 꼬리: [버블, 꼬리] + 0°
-                if (ll.indexOfChild(bubbleView) != 0) placeFirst(bubbleView)
-                if (ll.indexOfChild(tailView) != ll.childCount - 1) placeLast(tailView)
-                tailView.rotation = 0f
-            }
-            TailDir.LEFT -> {
-                ll.orientation = LinearLayout.HORIZONTAL
-                // 오른쪽 향함: [꼬리, 버블] + 90°
-                if (ll.indexOfChild(tailView) != 0) placeFirst(tailView)
-                if (ll.indexOfChild(bubbleView) != 1) { ll.removeView(bubbleView); ll.addView(bubbleView, 1) }
-                tailView.rotation = 90f
-            }
-            TailDir.RIGHT -> {
-                ll.orientation = LinearLayout.HORIZONTAL
-                // 왼쪽 향함: [버블, 꼬리] + 270°
-                if (ll.indexOfChild(bubbleView) != 0) placeFirst(bubbleView)
-                if (ll.indexOfChild(tailView) != ll.childCount - 1) placeLast(tailView)
-                tailView.rotation = 270f
-            }
-        }
-    }
-
-    // ===== 말풍선/꼬리 "실측" 유틸 =====
-    private data class BubbleSize(val bw: Int, val bh: Int, val arrowH: Int)
-
-    private fun measureBubble(container: View): BubbleSize {
+        // 옵션 패널 펼침 감지 → 인접역/SR (오른쪽 스냅 + 위로)
         val dm = resources.displayMetrics
-        val atMostW = MeasureSpec.makeMeasureSpec(dm.widthPixels, MeasureSpec.AT_MOST)
-        val atMostH = MeasureSpec.makeMeasureSpec(dm.heightPixels, MeasureSpec.AT_MOST)
+        val mergeThreshold = (12 * dm.density).toInt()
+        val header = nodes.filter { it.key.contains("옵션") }.minByOrNull { it.t }
 
-        // 미측정 상태에서도 즉시 사이즈 확보
-        container.measure(atMostW, atMostH)
-        val bw = container.measuredWidth.coerceAtLeast(container.width)
-        val bh = container.measuredHeight.coerceAtLeast(container.height)
+        val radios = nodes
+            .filter { it.key.contains("포함") || it.key.contains("미포함") }
+            .filter { header == null || it.t > header.t - (8 * dm.density).toInt() }
+            .sortedBy { it.t }
+            .toMutableList()
 
-        // 꼬리 실제 높이(리소스 기반) 추출
-        var tailView: ImageView? = null
-        if (container is LinearLayout) {
-            for (i in 0 until container.childCount) {
-                val child = container.getChildAt(i)
-                if (child is ImageView) { tailView = child; break }
+        val lines = mutableListOf<Node>()
+        var i = 0
+        while (i < radios.size) {
+            var j = i
+            var minL = radios[i].l; var minT = radios[i].t
+            var maxR = radios[i].r; var maxB = radios[i].b
+            while (j + 1 < radios.size &&
+                kotlin.math.abs(radios[j + 1].t - radios[j].t) <= mergeThreshold) {
+                j++
+                minL = minOf(minL, radios[j].l); minT = minOf(minT, radios[j].t)
+                maxR = maxOf(maxR, radios[j].r); maxB = maxOf(maxB, radios[j].b)
             }
+            lines += Node(minL, minT, maxR, maxB, "radio-line")
+            i = j + 1
+            if (lines.size == 2) break
         }
-        val arrowH = when {
-            tailView == null -> (ARROW_FALLBACK_DP * dm.density).toInt()
-            else -> {
-                tailView!!.measure(atMostW, atMostH)
-                tailView!!.measuredHeight.coerceAtLeast((ARROW_FALLBACK_DP * dm.density).toInt())
-            }
+
+        if (lines.size >= 2) {
+            showAt(R.id.nearby_option_container, "인접역", lines[0])
+            showAt(R.id.sr_option_container, "SR연계",  lines[1])
+        } else {
+            root.findViewById<View>(R.id.nearby_option_container)?.visibility = View.GONE
+            root.findViewById<View>(R.id.sr_option_container)?.visibility = View.GONE
         }
-        return BubbleSize(bw, bh, arrowH)
+
+        // “열차 조회” : 웹에서 파싱한 버튼 사각형 기준 사이드 배치
+        nodes.firstOrNull { it.key.contains("열차") && it.key.contains("조회") }?.let { n ->
+            showAt(R.id.train_search_container, "열차조회", n)
+        } ?: run {
+            root.findViewById<View>(R.id.train_search_container)?.visibility = View.GONE
+        }
     }
 
-    /**
-     * 버튼 사각형(l,t,r,b)의 가운데 기준으로
-     * 1) 위 우선 → 아래 → 왼쪽 → 오른쪽 순서로 배치
-     * 2) "기본 간격" 유지하되, 겹치면 EXTRA_STEP 만큼 늘리며 재시도(최대 EXTRA_MAX_STEPS)
-     * 3) 실제 배치 방향에 맞춰 꼬리 전환
-     */
-    private fun placeBubble(container: View, l: Int, t: Int, r: Int, b: Int) {
+    // ---- 공통 배치 + 프로필 적용 ----
+
+    private fun dp(v: Float): Int = (v * resources.displayMetrics.density).toInt()
+
+    private fun placeBubbleWithProfile(
+        containerId: Int, container: View,
+        l: Int, t: Int, r: Int, b: Int
+    ) {
+        val profile = bubbleProfiles[containerId]
+        if (profile == null) {
+            placeBubble(container, l, t, r, b) // 기본
+        } else {
+            placeBubble(
+                container, l, t, r, b,
+                order = profile.order,
+                dxDp = profile.dxDp,
+                dyDp = profile.dyDp,
+                snapRightEdge = profile.snapRightEdge
+            )
+        }
+    }
+
+    // 기본 placeBubble
+    private fun placeBubble(
+        container: View,
+        l: Int, t: Int, r: Int, b: Int,
+        order: List<Placement> = listOf(Placement.TOP, Placement.BOTTOM, Placement.LEFT, Placement.RIGHT)
+    ) = placeBubble(container, l, t, r, b, order, dxDp = 0f, dyDp = 0f, snapRightEdge = false)
+
+    // nudging & snap 지원 placeBubble
+    private fun placeBubble(
+        container: View,
+        l: Int, t: Int, r: Int, b: Int,
+        order: List<Placement>,
+        dxDp: Float,
+        dyDp: Float,
+        snapRightEdge: Boolean
+    ) {
         container.post {
             try {
                 val lp = container.layoutParams as? ConstraintLayout.LayoutParams ?: return@post
@@ -274,109 +299,88 @@ class TrainOverlayService : Service() {
                 val screenW = dm.widthPixels
                 val screenH = dm.heightPixels
 
+                val gap = (GAP_DP * dm.density).toInt()
                 val safeTop = (SAFE_TOP_DP * dm.density).toInt()
-                val baseGap = (GAP_DP_BASE * dm.density).toInt()
-                val extraStep = (EXTRA_STEP_DP * dm.density).toInt()
-                val margin = baseGap
+                val margin = gap
+                val arrowH = (6 * dm.density).toInt() // 꼬리 없는 말풍선도 여유 간격으로 사용
 
-                val size = measureBubble(container)
-                val bw = size.bw
-                val bh = size.bh
-                var arrowH = size.arrowH
+                val bw = if (container.measuredWidth > 0) container.measuredWidth else container.width
+                val bh = if (container.measuredHeight > 0) container.measuredHeight else container.height
 
                 val cx = (l + r) / 2
                 val cy = (t + b) / 2
 
-                fun intersects(btnL: Int, btnT: Int, btnR: Int, btnB: Int, x: Int, y: Int, w: Int, h: Int): Boolean {
-                    val bl = x
-                    val bt = y
-                    val br = x + w
-                    val bb = y + h
-                    return !(br <= btnL || bl >= btnR || bb <= btnT || bt >= btnB)
-                }
-
-                data class Candidate(val x: Int, val y: Int, val dir: TailDir)
-
-                fun tryTop(extra: Int): Candidate? {
-                    val x = (cx - bw / 2 + offsetX).coerceIn(margin, screenW - bw - margin)
-                    val y = t - bh - baseGap - extra - arrowH + offsetY
-                    if (y < safeTop) return null
-                    return Candidate(x, y, TailDir.DOWN)
-                }
-
-                fun tryBottom(extra: Int): Candidate? {
-                    val x = (cx - bw / 2 + offsetX).coerceIn(margin, screenW - bw - margin)
-                    val y = b + baseGap + extra + arrowH + offsetY
-                    if (y + bh > screenH - margin) return null
-                    return Candidate(x, y, TailDir.UP)
-                }
-
-                fun tryLeft(extra: Int): Candidate? {
-                    val x = l - bw - baseGap - extra + offsetX
-                    if (x < margin) return null
+                // ---- 스냅: 오른쪽 끝(옵션 말풍선 전용)
+                val base: Pair<Int, Int> = if (snapRightEdge) {
+                    val x = (screenW - bw - margin) + offsetX
                     val y = (cy - bh / 2 + offsetY).coerceIn(safeTop, screenH - bh - margin)
-                    return Candidate(x, y, TailDir.RIGHT)
-                }
+                    x to y
+                } else {
+                    // 방향 우선순위대로 배치
+                    fun tryTop(): Pair<Int, Int>? {
+                        val x = (cx - bw / 2 + offsetX).coerceIn(margin, screenW - bw - margin)
+                        val y = t - bh - gap - arrowH + offsetY
+                        return if (y >= safeTop) x to y else null
+                    }
+                    fun tryBottom(): Pair<Int, Int>? {
+                        val x = (cx - bw / 2 + offsetX).coerceIn(margin, screenW - bw - margin)
+                        val y = b + gap + arrowH + offsetY
+                        return if (y + bh <= screenH - margin) x to y else null
+                    }
+                    fun tryLeft(): Pair<Int, Int>? {
+                        val x = l - bw - gap + offsetX
+                        if (x < margin) return null
+                        val y = (cy - bh / 2 + offsetY).coerceIn(safeTop, screenH - bh - margin)
+                        return x to y
+                    }
+                    fun tryRight(): Pair<Int, Int>? {
+                        val x = r + gap + offsetX
+                        if (x + bw > screenW - margin) return null
+                        val y = (cy - bh / 2 + offsetY).coerceIn(safeTop, screenH - bh - margin)
+                        return x to y
+                    }
 
-                fun tryRight(extra: Int): Candidate? {
-                    val x = r + baseGap + extra + offsetX
-                    if (x + bw > screenW - margin) return null
-                    val y = (cy - bh / 2 + offsetY).coerceIn(safeTop, screenH - bh - margin)
-                    return Candidate(x, y, TailDir.LEFT)
-                }
-
-                // 계단식(0, step, 2*step, ...)으로 겹침이 해소될 때까지 시도
-                var chosen: Candidate? = null
-                loop@ for (step in 0..EXTRA_MAX_STEPS) {
-                    val extra = step * extraStep
-
-                    val order = arrayOf(::tryTop, ::tryBottom, ::tryLeft, ::tryRight)
-                    for (fn in order) {
-                        val cand = fn(extra) ?: continue
-                        if (!intersects(l, t, r, b, cand.x, cand.y, bw, bh)) {
-                            chosen = cand
-                            break@loop
+                    var pos: Pair<Int, Int>? = null
+                    for (p in order) {
+                        pos = when (p) {
+                            Placement.TOP -> tryTop()
+                            Placement.BOTTOM -> tryBottom()
+                            Placement.LEFT -> tryLeft()
+                            Placement.RIGHT -> tryRight()
                         }
+                        if (pos != null) break
+                    }
+                    pos ?: run {
+                        // 최후의 수단: 위쪽 중앙
+                        val x = (cx - bw / 2 + offsetX).coerceIn(margin, screenW - bw - margin)
+                        val y = (t - bh - gap - arrowH + offsetY).coerceIn(safeTop, screenH - bh - margin)
+                        x to y
                     }
                 }
 
-                // 그래도 못 찾으면 최후 보정(위쪽 기준, 화면 클램프)
-                if (chosen == null) {
-                    val x = (cx - bw / 2 + offsetX).coerceIn(margin, screenW - bw - margin)
-                    val y = (t - bh - baseGap - arrowH + offsetY).coerceIn(safeTop, screenH - bh - margin)
-                    chosen = Candidate(x, y, TailDir.DOWN)
-                }
+                // nudging + 최종 클램프
+                val xNudged = (base.first + dp(dxDp)).coerceIn(margin, screenW - bw - margin)
+                val yNudged = (base.second + dp(dyDp)).coerceIn(safeTop, screenH - bh - margin)
 
-                // 적용
                 lp.startToStart = ConstraintLayout.LayoutParams.PARENT_ID
                 lp.topToTop = ConstraintLayout.LayoutParams.PARENT_ID
-                lp.leftMargin = chosen!!.x
-                lp.topMargin = chosen!!.y
+                lp.leftMargin = xNudged
+                lp.topMargin = yNudged
                 lp.rightMargin = 0
                 lp.bottomMargin = 0
                 container.layoutParams = lp
                 container.requestLayout()
 
-                // 꼬리 반영
-                setBalloonTail(container, chosen!!.dir)
-
-                Log.d(
-                    TAG,
-                    "placeBubble => pos=${chosen!!.x},${chosen!!.y}, dir=${chosen!!.dir} " +
-                            "rect=($l,$t,$r,$b) bubble=${bw}x$bh arrowH=$arrowH offset=($offsetX,$offsetY)"
-                )
-            } catch (e: Throwable) {
-                Log.e(TAG, "placeBubble 예외", e)
+                Log.d(TAG, "placeBubble order=$order snapRight=$snapRightEdge dx=$dxDp dy=$dyDp → $xNudged,$yNudged")
+            } catch (t: Throwable) {
+                Log.e(TAG, "placeBubble 예외", t)
             }
         }
     }
 
     override fun onDestroy() {
-        Log.d(TAG, "onDestroy()")
         if (overlayView != null && isOverlayAdded) {
             runCatching { windowManager.removeView(overlayView) }
-                .onSuccess { Log.d(TAG, "overlay 제거 완료") }
-                .onFailure { Log.e(TAG, "overlay 제거 실패", it) }
             isOverlayAdded = false
         }
         overlayView = null
