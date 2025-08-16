@@ -20,15 +20,15 @@
         <!-- 공통 툴바 -->
         <include layout="@layout/toolbar" />
 
-        <!-- 안내 아이콘 + 문구 -->
+        <!-- 안내 아이콘 + 문구 (여백 축소) -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="12dp"
             android:layout_marginHorizontal="18dp"
-            android:layout_marginBottom="60dp">
+            android:layout_marginBottom="24dp">
 
             <ImageView
                 android:layout_width="80dp"
@@ -51,10 +51,11 @@
             android:id="@+id/button_app_guide"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:minHeight="110dp"
             android:orientation="vertical"
             android:background="@drawable/button_background"
             android:padding="20dp"
-            android:layout_marginBottom="30dp"
+            android:layout_marginBottom="16dp"
             android:layout_marginHorizontal="18dp"
             android:clickable="true"
             android:focusable="true">
@@ -73,7 +74,7 @@
                 android:text="카카오톡, 유튜브를 사용하고 싶어요"
                 android:textSize="18sp"
                 android:textColor="#666666"
-                android:layout_marginTop="30dp" />
+                android:layout_marginTop="12dp" />
         </LinearLayout>
 
         <!-- 버튼 2 -->
@@ -81,10 +82,11 @@
             android:id="@+id/button_booking"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:minHeight="110dp"
             android:orientation="vertical"
             android:background="@drawable/button_background"
             android:padding="20dp"
-            android:layout_marginBottom="30dp"
+            android:layout_marginBottom="16dp"
             android:layout_marginHorizontal="18dp"
             android:clickable="true"
             android:focusable="true">
@@ -103,18 +105,17 @@
                 android:text="기차표, 야구 경기표를 예매하고 싶어요"
                 android:textSize="18sp"
                 android:textColor="#666666"
-                android:layout_marginTop="30dp" />
+                android:layout_marginTop="12dp" />
         </LinearLayout>
 
-        <!-- 버튼 3 -->
-
-        <!-- 버튼 4: 설정 -->
+        <!-- 버튼 3: 음성도우미 -->
         <LinearLayout
             android:id="@+id/button_voice_guide"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:minHeight="110dp"
             android:layout_marginHorizontal="18dp"
-            android:layout_marginBottom="30dp"
+            android:layout_marginBottom="16dp"
             android:background="@drawable/button_background"
             android:clickable="true"
             android:focusable="true"
@@ -132,20 +133,22 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="12dp"
                 android:text="물어보고 싶은게 있어요"
                 android:textColor="#666666"
                 android:textSize="18sp" />
         </LinearLayout>
 
+        <!-- 버튼 4: 설정 -->
         <LinearLayout
             android:id="@+id/button_settings"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:minHeight="110dp"
             android:orientation="vertical"
             android:background="@drawable/button_background"
             android:padding="20dp"
-            android:layout_marginBottom="30dp"
+            android:layout_marginBottom="16dp"
             android:layout_marginHorizontal="18dp"
             android:clickable="true"
             android:focusable="true">
@@ -166,13 +169,13 @@
                 android:text="문의하기, 시스템 설정 변경"
                 android:textSize="18sp"
                 android:textColor="#666666"
-                android:layout_marginTop="30dp" />
+                android:layout_marginTop="12dp" />
         </LinearLayout>
 
-        <!-- ✅ 하단 여백용 뷰 -->
+        <!-- 하단 여백 -->
         <View
             android:layout_width="match_parent"
-            android:layout_height="30dp" />
+            android:layout_height="12dp" />
 
     </LinearLayout>
 </ScrollView>
