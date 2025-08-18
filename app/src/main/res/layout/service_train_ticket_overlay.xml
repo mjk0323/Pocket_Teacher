@@ -316,13 +316,6 @@
             android:maxWidth="260dp"
             android:gravity="center"
             android:textAlignment="center" />
-
-<!--        <ImageView-->
-<!--            android:layout_width="16dp"-->
-<!--            android:layout_height="8dp"-->
-<!--            android:src="@drawable/balloon_tail"-->
-<!--            android:layout_gravity="start"-->
-<!--            android:layout_marginStart="20dp" />-->
     </LinearLayout>
 
     <!-- 옵션: SR 연계 설명 말풍선 -->
@@ -349,13 +342,6 @@
             android:maxWidth="240dp"
             android:gravity="center"
             android:textAlignment="center" />
-
-<!--        <ImageView-->
-<!--            android:layout_width="16dp"-->
-<!--            android:layout_height="8dp"-->
-<!--            android:src="@drawable/balloon_tail"-->
-<!--            android:layout_gravity="start"-->
-<!--            android:layout_marginStart="20dp" />-->
     </LinearLayout>
 
 
