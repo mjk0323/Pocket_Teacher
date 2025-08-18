@@ -5,6 +5,8 @@ import android.content.Intent
 import android.graphics.PixelFormat
 import android.os.Build
 import android.os.IBinder
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -21,10 +23,14 @@ class KakaoOverlayService : Service() {
     private lateinit var windowManager: WindowManager
     private var overlayView: View? = null
 
-    // ✅ 간격만 제어 (필요 시 숫자만 바꾸면 됨)
-    private val topGapDp = 2      // 상단 아이콘과 말풍선 사이
-    private val bottomGapDp = 2   // 하단 탭과 말풍선 사이
-    private val screenPadDp = 4   // 화면 가장자리 여백(보호)
+    // 카카오톡 종료 감지를 위한 핸들러 추가
+    private val handler = Handler(Looper.getMainLooper())
+    private val checkRunnable = object : Runnable {
+        override fun run() {
+            checkAppStatus()
+            handler.postDelayed(this, 3000) // 3초마다 체크
+        }
+    }
 
     override fun onBind(intent: Intent?): IBinder? = null
 
@@ -66,7 +72,29 @@ class KakaoOverlayService : Service() {
 
         showOverlay(buttonInfoList)
 
+        // 앱 상태 체크 시작
+        handler.postDelayed(checkRunnable, 5000) // 5초 후부터 시작
+
         return START_STICKY
+    }
+
+    // 카카오톡 프로세스 체크
+    private fun checkAppStatus() {
+        try {
+            val activityManager = getSystemService(ACTIVITY_SERVICE) as android.app.ActivityManager
+            val runningProcesses = activityManager.runningAppProcesses
+
+            val isKakaoRunning = runningProcesses?.any { process ->
+                process.processName == "com.kakao.talk"
+            } ?: false
+
+            if (!isKakaoRunning) {
+                Log.d("OVERLAY_SERVICE", "카카오톡 프로세스 종료됨 - 서비스 종료")
+                stopSelf()
+            }
+        } catch (e: Exception) {
+            Log.e("OVERLAY_SERVICE", "앱 상태 체크 실패: ${e.message}")
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -107,7 +135,7 @@ class KakaoOverlayService : Service() {
 
     private fun updateOverlayVisibility(buttonInfoList: List<String>) {
         overlayView?.let { view ->
-            // 먼저 모든 컨테이너를 GONE으로 설정
+            // 모든 컨테이너를 GONE으로 설정
             view.findViewById<View>(R.id.search_container)?.visibility = View.GONE
             view.findViewById<View>(R.id.add_friend_container)?.visibility = View.GONE
             view.findViewById<View>(R.id.friend_container)?.visibility = View.GONE
@@ -137,14 +165,21 @@ class KakaoOverlayService : Service() {
 
                 when {
                     // 상단 탭
-                    combinedText.contains("검색") -> {
+                    combinedText.contains("검색") && ! combinedText.contains("상품을 검색해보세요")-> {
                         val container = view.findViewById<View>(R.id.search_container)
                         container?.let {
                             it.visibility = View.VISIBLE
                             topContainerPosition(it, left, top)
                         }
                     }
-                    combinedText.contains("친구") && combinedText.contains("추가") -> {
+                    combinedText.contains("상품을 검색해보세요")-> {
+                        val container = view.findViewById<View>(R.id.search_product_container)
+                        container?.let {
+                            it.visibility = View.VISIBLE
+                            topContainerPosition(it, left, top)
+                        }
+                    }
+                    combinedText.contains("친구 추가")-> {
                         val container = view.findViewById<View>(R.id.add_friend_container)
                         container?.let {
                             it.visibility = View.VISIBLE
@@ -158,7 +193,7 @@ class KakaoOverlayService : Service() {
                             topContainerPosition(it, left, top)
                         }
                     }
-                    combinedText.contains("옵션") && combinedText.contains("더보기") -> {
+                    combinedText.contains("옵션 더보기") -> {
                         val container = view.findViewById<View>(R.id.option_container)
                         container?.let {
                             it.visibility = View.VISIBLE
@@ -167,7 +202,7 @@ class KakaoOverlayService : Service() {
                     }
 
                     // 오픈채팅 상단 (원본 유지)
-                    combinedText.contains("지금") && combinedText.contains("뜨는") -> {
+                    combinedText.contains("지금 뜨는")-> {
                         val container = view.findViewById<View>(R.id.openchat_category_container)
                         container?.let {
                             it.visibility = View.VISIBLE
@@ -175,22 +210,22 @@ class KakaoOverlayService : Service() {
                         }
                     }
 
-                    // 하단 탭 : (원본의 top-200 삭제) → gap만 적용하는 bottomContainerPosition 사용
-                    combinedText.contains("친구") && combinedText.contains("탭") -> {
+                    // 하단 탭
+                    combinedText.contains("친구 탭")-> {
                         val container = view.findViewById<View>(R.id.friend_container)
                         container?.let {
                             it.visibility = View.VISIBLE
                             bottomContainerPosition(it, left, top)
                         }
                     }
-                    combinedText.contains("채팅 탭") && combinedText.contains("탭") -> {
+                    combinedText.contains("채팅 탭")-> {
                         val container = view.findViewById<View>(R.id.chat_container)
                         container?.let {
                             it.visibility = View.VISIBLE
                             bottomContainerPosition(it, left, top)
                         }
                     }
-                    combinedText.contains("open")-> {
+                    combinedText.contains("open chat tab")-> {
                         val container = view.findViewById<View>(R.id.openchat_container)
                         container?.let {
                             it.visibility = View.VISIBLE
@@ -216,39 +251,28 @@ class KakaoOverlayService : Service() {
         }
     }
 
-    /** 상단 아이콘 주변(버튼 아래) → 말풍선은 아래에, 꼬리는 '위쪽' */
     private fun topContainerPosition(container: View, x: Int, y: Int) {
         container.post {
-            val constraintParams = container.layoutParams as ConstraintLayout.LayoutParams
-
-            // 부모의 왼쪽 위 모서리를 기준점으로 설정
-            constraintParams.startToStart = ConstraintLayout.LayoutParams.PARENT_ID
-            constraintParams.topToTop = ConstraintLayout.LayoutParams.PARENT_ID
-
-            // 절대 좌표를 마진으로 설정 (아이콘과의 간격을 아주 작게)
-            val pad = dp(screenPadDp)
-            constraintParams.leftMargin = (x - 30).coerceAtLeast(pad)
-            constraintParams.topMargin = (y + dp(topGapDp)).coerceAtLeast(pad)
-
-            // 다른 마진은 0으로 초기화
-            constraintParams.rightMargin = 0
-            constraintParams.bottomMargin = 0
-
-            container.layoutParams = constraintParams
+            val p = container.layoutParams as ConstraintLayout.LayoutParams
+            p.startToStart = ConstraintLayout.LayoutParams.PARENT_ID
+            p.topToTop = ConstraintLayout.LayoutParams.PARENT_ID
+            p.leftMargin = x - 30
+            p.topMargin = y
+            p.rightMargin = 0
+            p.bottomMargin = 0
+            container.layoutParams = p
             container.requestLayout()
 
-            // ✅ 버튼 아래쪽에 말풍선 → 꼬리는 위쪽을 향하게
+            // 버튼 아래에 말풍선 → 꼬리는 위
             setBalloonTail(container, tailOnTop = true)
         }
     }
 
-    /** 하단 탭 위(버튼 위) → 말풍선은 위에, 꼬리는 '아래쪽' */
     private fun bottomContainerPosition(container: View, x: Int, y: Int) {
         container.post {
             val params = container.layoutParams as ConstraintLayout.LayoutParams
             val parent = container.parent as View
 
-            // 아직 사이즈가 안 나왔으면 다음 프레임에 다시
             if (parent.width == 0 || parent.height == 0 ||
                 container.measuredWidth == 0 || container.measuredHeight == 0) {
                 container.post { bottomContainerPosition(container, x, y) }
@@ -257,44 +281,35 @@ class KakaoOverlayService : Service() {
 
             val pw = parent.width
             val ph = parent.height
-            val w  = container.measuredWidth
-            val h  = container.measuredHeight
+            val w = container.measuredWidth
+            val h = container.measuredHeight
 
-            val pad = dp(screenPadDp)
-            val gap = dp(bottomGapDp)
+            val gap = (6 * resources.displayMetrics.density).toInt()
+            val pad = (6 * resources.displayMetrics.density).toInt()
 
-            // 1) x는 화면 안으로만 보정
             val left = x.coerceIn(pad, (pw - w - pad).coerceAtLeast(pad))
+            var top = y - h - gap
+            top = top.coerceIn(pad, ph - h - pad)
+            val bottomMargin = ph - (top + h)
 
-            // 2) "버튼 바로 위"에 둘 top 좌표 계산 (고정값 제거, gap만 적용)
-            val topFromTop = (y - h - gap).coerceIn(pad, ph - h - pad)
-
-            // 3) bottomToBottom 기준 bottomMargin 계산 (양수)
-            val bottomMargin = ph - (topFromTop + h)
-
-            // 4) 제약 설정
-            params.startToStart   = ConstraintLayout.LayoutParams.PARENT_ID
+            params.startToStart = ConstraintLayout.LayoutParams.PARENT_ID
             params.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
-            params.topToTop       = ConstraintLayout.LayoutParams.UNSET
-            params.endToEnd       = ConstraintLayout.LayoutParams.UNSET
-
-            // 5) 마진 적용
-            params.leftMargin   = left
-            params.topMargin    = 0
-            params.rightMargin  = 0
+            params.topToTop = ConstraintLayout.LayoutParams.UNSET
+            params.endToEnd = ConstraintLayout.LayoutParams.UNSET
+            params.leftMargin = left
+            params.topMargin = 0
+            params.rightMargin = 0
             params.bottomMargin = bottomMargin
 
             container.layoutParams = params
             container.requestLayout()
 
-            // ✅ 버튼 위쪽에 말풍선 → 꼬리는 아래쪽을 향하게
+            // 버튼 위에 말풍선 → 꼬리는 아래
             setBalloonTail(container, tailOnTop = false)
         }
     }
 
-    // ===== 말풍선 꼬리 방향 전환(위/아래) =====
     private fun setBalloonTail(container: View, tailOnTop: Boolean) {
-        // 컨테이너는 LinearLayout(말풍선 TextView + 꼬리 ImageView)라고 가정
         val ll = container as? LinearLayout ?: return
 
         var tail: ImageView? = null
@@ -302,38 +317,41 @@ class KakaoOverlayService : Service() {
         for (i in 0 until ll.childCount) {
             when (val child = ll.getChildAt(i)) {
                 is ImageView -> if (tail == null) tail = child
-                is TextView  -> if (bubble == null) bubble = child
+                is TextView -> if (bubble == null) bubble = child
             }
         }
         val tailView = tail ?: return
         val bubbleView = bubble ?: return
 
+        // 위/아래 재배치 + 방향 변경
         if (tailOnTop) {
-            // 꼬리 위쪽(버튼 아래에 말풍선) → [꼬리, 버블] 순서 + 180도 회전
             if (ll.indexOfChild(tailView) != 0) {
-                ll.removeView(tailView); ll.addView(tailView, 0)
+                ll.removeView(tailView)
+                ll.addView(tailView, 0)
             }
             if (ll.indexOfChild(bubbleView) != 1) {
-                ll.removeView(bubbleView); ll.addView(bubbleView, 1)
+                ll.removeView(bubbleView)
+                ll.addView(bubbleView, 1)
             }
             tailView.rotation = 180f
         } else {
-            // 꼬리 아래쪽(버튼 위에 말풍선) → [버블, 꼬리] 순서 + 0도
             if (ll.indexOfChild(bubbleView) != 0) {
-                ll.removeView(bubbleView); ll.addView(bubbleView, 0)
+                ll.removeView(bubbleView)
+                ll.addView(bubbleView, 0)
             }
             if (ll.indexOfChild(tailView) != ll.childCount - 1) {
-                ll.removeView(tailView); ll.addView(tailView)
+                ll.removeView(tailView)
+                ll.addView(tailView)
             }
             tailView.rotation = 0f
         }
     }
 
-    private fun dp(v: Int): Int =
-        (v * resources.displayMetrics.density).toInt()
-
     override fun onDestroy() {
         super.onDestroy()
+        // 핸들러 정리
+        handler.removeCallbacks(checkRunnable)
+
         if (overlayView != null) {
             windowManager.removeView(overlayView)
         }
