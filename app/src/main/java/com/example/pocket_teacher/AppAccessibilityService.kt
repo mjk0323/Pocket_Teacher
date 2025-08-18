@@ -104,10 +104,18 @@ class AppAccessibilityService : AccessibilityService() {
         if (!node.isVisibleToUser) return
 
         // 버튼이나 클릭 가능한 요소 확인
-        if (node.className == "android.widget.Button" ||
-            node.className == "android.widget.ImageButton" ||
-            node.isClickable ||
-            node.isLongClickable) {
+        val isInteractable = node.className == "android.widget.Button" ||
+                node.className == "android.widget.ImageButton" ||
+                node.className == "android.widget.TextView" ||
+                node.className == "android.widget.ImageView" ||
+                node.className == "android.view.View" ||
+                node.className == "android.webkit.WebView" ||
+                node.isClickable ||
+                node.isLongClickable ||
+                node.isFocusable ||
+                (!node.text.isNullOrEmpty()) ||
+                (!node.contentDescription.isNullOrEmpty())
+        if (isInteractable){
 
             val bounds = Rect()
             node.getBoundsInScreen(bounds)
