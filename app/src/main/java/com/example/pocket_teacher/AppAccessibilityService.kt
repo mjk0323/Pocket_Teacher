@@ -9,12 +9,23 @@ import android.view.accessibility.AccessibilityNodeInfo
 
 class AppAccessibilityService : AccessibilityService() {
 
+    // 중복 수집 방지를 위한 변수들만 추가
+    private val DEBOUNCE_DELAY = 300L // 1초 내 중복 이벤트 무시
+    private var lastEventTime = 0L
+
     override fun onServiceConnected() {
         // Accessibility Service 연결
         super.onServiceConnected()
     }
 
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
+        // 중복 이벤트 방지 로직만 추가
+        val currentTime = System.currentTimeMillis()
+        if (currentTime - lastEventTime < DEBOUNCE_DELAY) {
+            return
+        }
+        lastEventTime = currentTime
+
         when(event?.packageName){
             "com.kakao.talk"->
                 when(event.eventType){
@@ -89,11 +100,22 @@ class AppAccessibilityService : AccessibilityService() {
     }
 
     private fun findButtonElements(node: AccessibilityNodeInfo, buttonInfoList: MutableList<String>) {
+        // 보이는 버튼만 수집하도록 한 줄만 추가
+        if (!node.isVisibleToUser) return
+
         // 버튼이나 클릭 가능한 요소 확인
-        if (node.className == "android.widget.Button" ||
-            node.className == "android.widget.ImageButton" ||
-            node.isClickable ||
-            node.isLongClickable) {
+        val isInteractable = node.className == "android.widget.Button" ||
+                node.className == "android.widget.ImageButton" ||
+                node.className == "android.widget.TextView" ||
+                node.className == "android.widget.ImageView" ||
+                node.className == "android.view.View" ||
+                node.className == "android.webkit.WebView" ||
+                node.isClickable ||
+                node.isLongClickable ||
+                node.isFocusable ||
+                (!node.text.isNullOrEmpty()) ||
+                (!node.contentDescription.isNullOrEmpty())
+        if (isInteractable){
 
             val bounds = Rect()
             node.getBoundsInScreen(bounds)

@@ -4,7 +4,9 @@ import android.app.Service
 import android.content.Intent
 import android.graphics.PixelFormat
 import android.os.Build
+import android.os.Handler
 import android.os.IBinder
+import android.os.Looper
 import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -19,6 +21,15 @@ import androidx.constraintlayout.widget.ConstraintLayout
 class YoutubeOverlayService : Service() {
     private lateinit var windowManager: WindowManager
     private var overlayView: View? = null
+
+    // 앱 종료 감지를 위한 핸들러 추가
+    private val handler = Handler(Looper.getMainLooper())
+    private val checkRunnable = object : Runnable {
+        override fun run() {
+            checkAppStatus()
+            handler.postDelayed(this, 3000) // 3초마다 체크
+        }
+    }
 
     override fun onBind(intent: Intent?): IBinder? = null
 
@@ -60,6 +71,25 @@ class YoutubeOverlayService : Service() {
 
         showOverlay(buttonInfoList)
         return START_STICKY
+    }
+
+    // 유튜브 프로세스 체크
+    private fun checkAppStatus() {
+        try {
+            val activityManager = getSystemService(ACTIVITY_SERVICE) as android.app.ActivityManager
+            val runningProcesses = activityManager.runningAppProcesses
+
+            val isKakaoRunning = runningProcesses?.any { process ->
+                process.processName == "com.google.andriod.youtube"
+            } ?: false
+
+            if (!isKakaoRunning) {
+                Log.d("OVERLAY_SERVICE", "카카오톡 프로세스 종료됨 - 서비스 종료")
+                stopSelf()
+            }
+        } catch (e: Exception) {
+            Log.e("OVERLAY_SERVICE", "앱 상태 체크 실패: ${e.message}")
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -255,24 +285,6 @@ class YoutubeOverlayService : Service() {
         }
     }
 
-    // ----------------- 꼬리 제어(안전 롤백 + 핀셋 보정) -----------------
-
-    private fun dp(v: Int): Int = (v * resources.displayMetrics.density).toInt()
-
-    /** 중앙 보정을 적용할 컨테이너 화이트리스트 (기본: 비어 있음 → 아무 것도 건드리지 않음) */
-    private val tailCenterIds: Set<Int> = emptySet()
-    // 예) 검색만 중앙 맞춤하고 싶으면:
-    // private val tailCenterIds: Set<Int> = setOf(R.id.search_container)
-
-    /** 컨테이너별 꼬리 X 미세 보정(dp). 중앙 보정이 켜진 컨테이너에만 적용됨. */
-    private val tailFineOffsetDp: Map<Int, Int> = emptyMap()
-    // 예) 검색만 -2dp:
-    // private val tailFineOffsetDp: Map<Int, Int> = mapOf(R.id.search_container to -2)
-
-    /**
-     * 말풍선 꼬리를 위/아래로 이동하고 방향만 바꾼다(기본).
-     * 가로 위치는 그대로 두되, tailCenterIds에 포함된 경우에만 버블 폭 기준 중앙 정렬 + 미세 보정 적용.
-     */
     private fun setBalloonTail(container: View, tailOnTop: Boolean) {
         val ll = container as? LinearLayout ?: return
 
@@ -287,56 +299,37 @@ class YoutubeOverlayService : Service() {
         val tailView = tail ?: return
         val bubbleView = bubble ?: return
 
-        // 1) 위/아래 재배치 + 방향만 변경 (가로 위치 유지)
+        // 위/아래 재배치 + 방향 변경
         if (tailOnTop) {
             if (ll.indexOfChild(tailView) != 0) {
-                ll.removeView(tailView); ll.addView(tailView, 0)
+                ll.removeView(tailView)
+                ll.addView(tailView, 0)
             }
             if (ll.indexOfChild(bubbleView) != 1) {
-                ll.removeView(bubbleView); ll.addView(bubbleView, 1)
+                ll.removeView(bubbleView)
+                ll.addView(bubbleView, 1)
             }
             tailView.rotation = 180f
         } else {
             if (ll.indexOfChild(bubbleView) != 0) {
-                ll.removeView(bubbleView); ll.addView(bubbleView, 0)
+                ll.removeView(bubbleView)
+                ll.addView(bubbleView, 0)
             }
             if (ll.indexOfChild(tailView) != ll.childCount - 1) {
-                ll.removeView(tailView); ll.addView(tailView)
+                ll.removeView(tailView)
+                ll.addView(tailView)
             }
             tailView.rotation = 0f
-        }
-
-        // 2) 선택적으로만 중앙 보정
-        if (!tailCenterIds.contains(container.id)) return
-
-        ll.post {
-            if (bubbleView.measuredWidth == 0 || tailView.measuredWidth == 0) {
-                ll.post { setBalloonTail(container, tailOnTop) }
-                return@post
-            }
-            val lp = (tailView.layoutParams as? LinearLayout.LayoutParams)
-                ?: LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
-                )
-
-            val centerMargin = ((bubbleView.measuredWidth - tailView.measuredWidth) / 2f).toInt()
-            val fine = tailFineOffsetDp[container.id] ?: 0
-            lp.marginStart = centerMargin + dp(fine)
-            lp.gravity = Gravity.CENTER_HORIZONTAL
-            tailView.layoutParams = lp
-            tailView.requestLayout()
         }
     }
 
     override fun onDestroy() {
         super.onDestroy()
+        // 핸들러 정리
+        handler.removeCallbacks(checkRunnable)
+
         if (overlayView != null) {
             windowManager.removeView(overlayView)
         }
     }
 }
-
-/** 문자열에 키워드들 중 하나라도 포함되는지 */
-private fun String.hasAny(vararg keys: String): Boolean =
-    keys.any { this.contains(it) }

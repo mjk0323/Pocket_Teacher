@@ -38,6 +38,36 @@
             android:src="@drawable/balloon_tail" />
     </LinearLayout>
 
+    <!-- 상품 검색 버튼  -->
+    <LinearLayout
+        android:id="@+id/search_product_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="gone">
+
+        <TextView
+            android:id="@+id/search_product_overlay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_overlay"
+            android:padding="10dp"
+            android:text="상품\n검색"
+            android:textColor="@color/balloon_text"
+            android:textAlignment="center"
+            android:gravity="center"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="8dp"
+            android:layout_gravity="center"
+            android:src="@drawable/balloon_tail" />
+    </LinearLayout>
+
     <!-- 친구 추가 버튼 -->
     <LinearLayout
         android:id="@+id/add_friend_container"
