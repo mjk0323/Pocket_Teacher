@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- 눌렀을 때 색상 (연한 노란색) -->
+    <item android:state_pressed="true">
+        <shape android:shape="oval">
+            <solid android:color="#FFF7E6"/> <!-- 두 번째 색 -->
+        </shape>
+    </item>
+
+    <!-- 평상시 색상 (진한 노란색) -->
+    <item>
+        <shape android:shape="oval">
+            <solid android:color="#FFD966"/> <!-- 첫 번째 색 -->
+        </shape>
+    </item>
+
+</selector>

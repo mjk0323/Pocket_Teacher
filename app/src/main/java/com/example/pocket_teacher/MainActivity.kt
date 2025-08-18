@@ -37,9 +37,16 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // 설정 버튼 클릭 시 SettingsAcivity로 이동
-        val SettingsButton = findViewById<LinearLayout>(R.id.button_settings)
-        SettingsButton.setOnClickListener {
+        // 음성 가이드 안내 버튼 클릭 시 VoiceAssistantActivity로 이동
+        val voiceButton = findViewById<LinearLayout>(R.id.button_voice_guide)
+        voiceButton.setOnClickListener {
+            val intent = Intent(this, VoiceAssistantActivity::class.java)
+            startActivity(intent)
+        }
+
+        // 설정 버튼 클릭 시 SettingsActivity로 이동
+        val settingsButton = findViewById<LinearLayout>(R.id.button_settings)
+        settingsButton.setOnClickListener {
             val intent = Intent(this, SettingsActivity::class.java)
             startActivity(intent)
         }
@@ -47,7 +54,6 @@ class MainActivity : AppCompatActivity() {
         // 닫기 버튼 처리
         val closeButton = findViewById<ImageView>(R.id.btn_close)
         closeButton.visibility = View.VISIBLE
-
         closeButton.setOnClickListener {
             finish()
         }

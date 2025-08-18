@@ -1,10 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+    android:id="@+id/voice_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".VoiceAssistantActivity">
+    android:background="@drawable/bg_voice_gradient">
+
+    <!-- 뒤로가기 -->
+    <ImageButton
+        android:id="@+id/button_back"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="뒤로가기"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_arrow_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <!-- 상단 타이틀 -->
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:text="손 안의 선생님"
+        android:textColor="#111111"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- 안내 문구 -->
+    <TextView
+        android:id="@+id/tvPrompt"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:text="궁금한 점이 있으신가요?\n아래 버튼을 눌러주세요"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:textColor="#1A1A1A"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/dot"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_goneMarginBottom="24dp"
+        />
+
+
+    <!-- 작은 점 -->
+    <View
+        android:id="@+id/dot"
+        android:layout_width="8dp"
+        android:layout_height="8dp"
+        android:background="@drawable/bg_dot_round"
+        app:layout_constraintBottom_toTopOf="@+id/guideLine"
+        app:layout_constraintStart_toStartOf="@+id/btnMic"
+        app:layout_constraintEnd_toEndOf="@+id/btnMic"/>
+
+    <!-- 점에서 마이크로 내려오는 가는 선 -->
+    <View
+        android:id="@+id/guideLine"
+        android:layout_width="2dp"
+        android:layout_height="44dp"
+        android:background="#B68C2A"
+        app:layout_constraintBottom_toTopOf="@+id/btnMic"
+        app:layout_constraintStart_toStartOf="@+id/btnMic"
+        app:layout_constraintEnd_toEndOf="@+id/btnMic"/>
+
+    <FrameLayout
+        android:id="@+id/btnMic"
+        android:layout_width="92dp"
+        android:layout_height="92dp"
+        android:layout_marginBottom="28dp"
+        android:background="@drawable/bg_mic_button"
+        android:foreground="@drawable/ripple_circle_light"
+        android:elevation="6dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageView
+            android:id="@+id/iconMic"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_mic_button"
+            android:contentDescription="보이스 버튼"/>
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

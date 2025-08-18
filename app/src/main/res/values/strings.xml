@@ -12,4 +12,6 @@
     <string name="title_activity_settings">SettingsActivity</string>
     <string name="title_activity_faqactivity">FAQActivity</string>
     <string name="title_activity_inquiry_history">Inquiry_history_Activity</string>
+    <string name="listening">듣는 중…</string>
+    <string name="voice">궁금한 점이 있으신가요?\n아래 버튼을 눌러주세요 </string>
 </resources>
