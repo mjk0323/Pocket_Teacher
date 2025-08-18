@@ -22,7 +22,7 @@ class YoutubeOverlayService : Service() {
     private lateinit var windowManager: WindowManager
     private var overlayView: View? = null
 
-    // 카카오톡 종료 감지를 위한 핸들러 추가
+    // 앱 종료 감지를 위한 핸들러 추가
     private val handler = Handler(Looper.getMainLooper())
     private val checkRunnable = object : Runnable {
         override fun run() {
