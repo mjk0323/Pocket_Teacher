@@ -28,7 +28,7 @@ class VoiceAssistantActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_voice_assistant)
 
-        // ✅ 시스템바 인셋 적용(상태바/내비바만큼 패딩)
+        // 상태바/네비바 패딩
         findViewById<View>(R.id.voice_root)?.let { root ->
             ViewCompat.setOnApplyWindowInsetsListener(root) { v, insets ->
                 val bars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -59,7 +59,7 @@ class VoiceAssistantActivity : AppCompatActivity() {
         }
     }
 
-    /** 듣기 시작: 텍스트는 그대로, 점/선 숨김 + 펄스 애니메이션 */
+//    듣기 시작: 점/선 숨김 + 펄스 애니메이션
     private fun startListening() {
         if (isListening) return
         isListening = true
@@ -73,7 +73,7 @@ class VoiceAssistantActivity : AppCompatActivity() {
         dot.isVisible = false
         guideLine.isVisible = false
 
-        // 펄스 애니메이션(1f <-> 1.12f 왕복)
+        // 펄스 애니메이션(1f <-> 1.12f)
         pulseAnimator?.cancel()
         pulseAnimator = ValueAnimator.ofFloat(1f, 1.12f).apply {
             duration = 380
@@ -88,7 +88,7 @@ class VoiceAssistantActivity : AppCompatActivity() {
         }
     }
 
-    /** 듣기 종료: 텍스트 원복, 점/선 다시 표시 + 애니메이션 정리 */
+    /** 듣기 종료: 텍스트 원래대로, 점/선 다시 표시 + 애니메이션 정리 */
     private fun finishListening() {
         if (!isListening) return
         isListening = false
@@ -104,7 +104,7 @@ class VoiceAssistantActivity : AppCompatActivity() {
         dot.isVisible = true
         guideLine.isVisible = true
 
-        // 접근성 문구 원복
+        // 접근성 문구 원래대로
         micBtn.contentDescription = getString(R.string.voice)
     }
 
