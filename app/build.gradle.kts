@@ -28,9 +28,10 @@ android {
             "GEMINI_API_KEY",
             "\"${localProperties["GEMINI_API_KEY"]}\""
         )
-        buildFeatures {
-            buildConfig = true
-        }
+    }
+
+    buildFeatures {
+        buildConfig = true
     }
 
     buildTypes {
