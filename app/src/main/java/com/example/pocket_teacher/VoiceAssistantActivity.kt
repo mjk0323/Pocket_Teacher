@@ -11,6 +11,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
+import com.example.pocket_teacher.BuildConfig
+import com.google.ai.client.generativeai.GenerativeModel
+
 
 class VoiceAssistantActivity : AppCompatActivity() {
 
@@ -22,6 +25,12 @@ class VoiceAssistantActivity : AppCompatActivity() {
     private lateinit var dot: View
     private lateinit var guideLine: View
     private lateinit var backBtn: ImageButton
+
+    // Gemini API 가져오기
+    val generativeModel = GenerativeModel(
+        modelName = "gemini-1.5-flash",
+        apiKey = BuildConfig.GEMINI_API_KEY
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,9 +59,12 @@ class VoiceAssistantActivity : AppCompatActivity() {
         dot.isVisible = true
         guideLine.isVisible = true
 
+        // 마이크 버튼 클릭 시
         micBtn.setOnClickListener {
             if (isListening) finishListening() else startListening()
         }
+
+        // 뒤로가기 버튼 클릭 시
         backBtn.setOnClickListener {
             if (isListening) finishListening()
             onBackPressedDispatcher.onBackPressed()
@@ -112,5 +124,4 @@ class VoiceAssistantActivity : AppCompatActivity() {
         super.onPause()
         if (isListening) finishListening()
     }
-
 }
