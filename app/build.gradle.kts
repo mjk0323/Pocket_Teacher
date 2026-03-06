@@ -1,3 +1,9 @@
+//Gemini API를 가져오기 위한 local properties를 읽는 코드
+import java.util.Properties
+
+val localProperties = Properties()
+localProperties.load(rootProject.file("local.properties").inputStream())
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -16,6 +22,15 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField(
+            "String",
+            "GEMINI_API_KEY",
+            "\"${localProperties["GEMINI_API_KEY"]}\""
+        )
+        buildFeatures {
+            buildConfig = true
+        }
     }
 
     buildTypes {
