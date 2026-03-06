@@ -70,6 +70,8 @@ class YoutubeOverlayService : Service() {
         }
 
         showOverlay(buttonInfoList)
+
+        handler.postDelayed(checkRunnable, 5000) // 5초 후부터 시작
         return START_STICKY
     }
 
@@ -79,12 +81,12 @@ class YoutubeOverlayService : Service() {
             val activityManager = getSystemService(ACTIVITY_SERVICE) as android.app.ActivityManager
             val runningProcesses = activityManager.runningAppProcesses
 
-            val isKakaoRunning = runningProcesses?.any { process ->
+            val isYoutubeRunning = runningProcesses?.any { process ->
                 process.processName == "com.google.andriod.youtube"
             } ?: false
 
-            if (!isKakaoRunning) {
-                Log.d("OVERLAY_SERVICE", "카카오톡 프로세스 종료됨 - 서비스 종료")
+            if (!isYoutubeRunning) {
+                Log.d("OVERLAY_SERVICE", "유튜브 프로세스 종료됨 - 서비스 종료")
                 stopSelf()
             }
         } catch (e: Exception) {
