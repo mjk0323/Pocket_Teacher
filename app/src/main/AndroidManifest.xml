@@ -5,6 +5,7 @@
     <!-- 권한 -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <!-- 패키지 가시성 (Android 11+) -->
     <queries>
