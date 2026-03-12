@@ -22,8 +22,13 @@
     <img width="985" height="640" alt="image" src="https://github.com/user-attachments/assets/9d7f0531-7007-4673-8b12-9bac81622cfb" />
 
 
-### 차후 목표
+### 작업 중 기능
 AI 도우미에 카메라 기능을 도입하여 키오스크를 안내 해주는 등 디지털 약자에게 도움이 될 수 있는 부가 서비스 추가
+
+### 솔루션 설명 영상
+![Pocket Teacher Explanation](https://youtu.be/ejnCdIEmDy8)
+### 시연 영상
+![Pocket Teacher](https://youtu.be/K0Oek3vWu2U)
 
 ### MVP
 - **앱 가이드 시스템**
