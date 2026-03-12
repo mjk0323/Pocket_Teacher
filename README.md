@@ -26,9 +26,10 @@
 AI 도우미에 카메라 기능을 도입하여 키오스크를 안내 해주는 등 디지털 약자에게 도움이 될 수 있는 부가 서비스 추가
 
 ### 솔루션 설명 영상
-![Pocket Teacher Explanation](https://youtu.be/ejnCdIEmDy8)
+[![Pocket Teacher Explanation](https://img.youtube.com/vi/ejnCdIEmDy8/0.jpg)](https://youtu.be/ejnCdIEmDy8)
+
 ### 시연 영상
-![Pocket Teacher](https://youtu.be/K0Oek3vWu2U)
+[![Pocket Teacher](https://img.youtube.com/vi/K0Oek3vWu2U/0.jpg)](https://youtu.be/K0Oek3vWu2U)
 
 ### MVP
 - **앱 가이드 시스템**
